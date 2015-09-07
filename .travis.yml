@@ -1,0 +1,26 @@
+language: android
+
+android:
+  components:
+    - build-tools-23.0.1
+    - android-23
+
+jdk:
+  - oraclejdk7
+  - oraclejdk8
+
+script: "./gradlew assembleDebug"
+
+env:
+  global:
+    secure: "PVbL8+paUZtJKEgWqq+Z73WZ00TKGJv26R1GDauhdoA8tMawYYy499JNFo6VUd0TSbYbPEvejJmS8d6V2fu5cnROrvweiiAsDoHOXXFIHPbQEzqE1cJqcIilsdR4YFP3SQ7Hv6SI/HVDxWkRAxgjvFjUSIGcnJqCAw/VffNlVhs="
+
+branches:
+  except:
+    - gh-pages
+
+sudo: false
+
+cache:
+  directories:
+    - $HOME/.gradle
