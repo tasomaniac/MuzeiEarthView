@@ -23,7 +23,6 @@ import java.util.List;
 import retrofit.MoshiConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
-import timber.log.Timber;
 
 public class EarthViewArtSource extends RemoteMuzeiArtSource {
     private static final String SOURCE_NAME = "EarthViewArtSource";
@@ -75,10 +74,10 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
 
         final String nextLink = prefs.getString(PREF_KEY_NEXT_EARTH_VIEW, EarthViewService.FIRST_EARTH_VIEW);
         try {
-            final Response<EarthViewService.EartView> response = service.nextEartView(nextLink).execute();
+            final Response<EartView> response = service.nextEartView(nextLink).execute();
 
             if (response.isSuccess()) {
-                EarthViewService.EartView eartView = response.body();
+                EartView eartView = response.body();
 
                 prefs.edit()
                         .putString(PREF_KEY_NEXT_EARTH_VIEW, eartView.getNextApi())
@@ -98,7 +97,6 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
                 scheduleUpdate(System.currentTimeMillis() + ROTATE_TIME_MILLIS);
             }
         } catch (Exception e) {
-            Timber.d(e, "Error getting the next link %s", nextLink);
             throw new RetryException(e);
         }
     }
@@ -109,26 +107,14 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
         super.onCustomCommand(id);
 
         if (COMMAND_ID_SHARE == id) {
-            Artwork currentArtwork = getCurrentArtwork();
-            if (currentArtwork == null) {
-                Timber.w("No current artwork, can't share.");
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(EarthViewArtSource.this,
-                                R.string.error_no_image_to_share,
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
-                return;
-            }
+            if (!checkValidArtwork(R.string.error_no_image_to_share)) return;
 
-            String detailUrl = "https://g.co/ev/" + currentArtwork.getToken();
+            String detailUrl = "https://g.co/ev/" + getCurrentArtwork().getToken();
 
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
             shareIntent.putExtra(Intent.EXTRA_TEXT, "My Android wallpaper today is '"
-                    + currentArtwork.getTitle().trim()
+                    + getCurrentArtwork().getTitle().trim()
                     + ". #MuzeiEarthView\n\n"
                     + detailUrl);
             shareIntent = Intent.createChooser(shareIntent, "Share artwork");
@@ -136,6 +122,7 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
             startActivity(shareIntent);
 
         } else if (COMMAND_ID_DOWNLOAD == id) {
+            if (!checkValidArtwork(R.string.error_no_image_to_download)) return;
 
             final String downloadUrl = prefs.getString(PREF_KEY_DOWNLOAD_URL, null);
             if (downloadUrl != null) {
@@ -196,6 +183,22 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
                 }
             });
         }
+    }
+
+    private boolean checkValidArtwork(final int errorMessage) {
+        Artwork currentArtwork = getCurrentArtwork();
+        if (currentArtwork == null) {
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(EarthViewArtSource.this,
+                            errorMessage,
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+            return false;
+        }
+        return true;
     }
 }
 

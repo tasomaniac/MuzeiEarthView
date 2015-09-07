@@ -4,6 +4,7 @@
   <string name="source_name">Earth View</string>
   <string name="source_description">Earth View from Google Earth everyday.</string>
   <string name="error_no_image_to_share">No image to share.</string>
+  <string name="error_no_image_to_download">No image to download.</string>
 
   <string name="action_share_artwork">Share artwork</string>
   <string name="action_download">Download Wallpaper</string>
