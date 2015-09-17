@@ -1,12 +1,15 @@
 package com.tasomaniac.muzei.earthview;
 
+import android.Manifest;
 import android.app.DownloadManager;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.content.ContextCompat;
 import android.text.format.DateUtils;
 import android.widget.Toast;
 
@@ -18,6 +21,7 @@ import com.tasomaniac.muzei.earthview.data.MapsLink;
 import com.tasomaniac.muzei.earthview.data.NextEarthView;
 import com.tasomaniac.muzei.earthview.data.RotateInterval;
 import com.tasomaniac.muzei.earthview.data.prefs.StringPreference;
+import com.tasomaniac.muzei.earthview.ui.SettingsActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -69,6 +73,14 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
 
     @Override
     protected void onTryUpdate(int reason) throws RetryException {
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            //Start Settings Activity to request permissions.
+            startActivity(new Intent(this, SettingsActivity.class));
+            return;
+        }
 
         final Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(MoshiConverterFactory.create())
