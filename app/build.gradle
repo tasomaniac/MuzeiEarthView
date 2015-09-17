@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.jakewharton.hugo'
+apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'com.github.triplet.play'
 apply plugin: 'io.fabric'
 
@@ -19,11 +20,13 @@ android {
     defaultConfig {
         applicationId "com.tasomaniac.muzei.earthview"
         minSdkVersion 17
-        targetSdkVersion rootProject.ext.compileSdkVersion
+        targetSdkVersion 22
         versionCode rootProject.ext.versionMajor * 10000 + rootProject.ext.versionMinor * 1000 + rootProject.ext.versionPatch * 100 + rootProject.ext.versionBuild
         versionName "${rootProject.ext.versionMajor}.${rootProject.ext.versionMinor}" + ((rootProject.ext.versionPatch != 0) ? ".${rootProject.ext.versionPatch}" : "")
         buildConfigField "String", "GIT_SHA", "\"${gitSha}\""
         buildConfigField "String", "BUILD_TIME", "\"${buildTime}\""
+
+        buildConfigField "String", "ANALYTICS_KEY", "\"\""
 
         resConfigs "en"
     }
@@ -51,6 +54,7 @@ android {
 
         release {
             minifyEnabled false
+            shrinkResources false
             signingConfig signingConfigs.release
         }
     }
@@ -82,10 +86,24 @@ play {
 }
 
 dependencies {
+    def supportLibVersion = "23.0.1"
+
     compile 'com.squareup.okhttp:okhttp:2.5.0'
     compile 'com.squareup.okio:okio:1.6.0'
     compile 'com.squareup.retrofit:retrofit:2.0.0-beta1'
     compile 'com.squareup.retrofit:converter-moshi:2.0.0-beta1'
+
+    compile "com.android.support:support-v4:$supportLibVersion"
+    compile "com.android.support:appcompat-v7:$supportLibVersion"
+    compile "com.android.support:design:$supportLibVersion"
+
+    compile "com.google.android.gms:play-services-analytics:7.8.0"
+
+    compile 'com.jakewharton.timber:timber:3.1.0'
+
+    compile "com.google.dagger:dagger:2.0.1"
+    apt "com.google.dagger:dagger-compiler:2.0.1"
+    provided 'org.glassfish:javax.annotation:10.0-b28'
 
     compile 'com.google.android.apps.muzei:muzei-api:2.0'
 

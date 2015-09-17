@@ -1,6 +1,6 @@
 package com.tasomaniac.muzei.earthview;
 
-public class EartView {
+public class EarthView {
 
     private String slug;
     private String mapsLink;
@@ -23,7 +23,7 @@ public class EartView {
     private String nextUrl;
 
 
-    public EartView() {
+    public EarthView() {
     }
 
     public void setNextUrl(String nextUrl) {
@@ -176,7 +176,7 @@ public class EartView {
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof EartView && ((EartView) obj).getId().equals(id);
+        return obj instanceof EarthView && ((EarthView) obj).getId().equals(id);
     }
 
     @Override

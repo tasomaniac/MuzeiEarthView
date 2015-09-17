@@ -3,22 +3,28 @@ package com.tasomaniac.muzei.earthview;
 import android.app.DownloadManager;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
-import android.preference.PreferenceManager;
+import android.text.format.DateUtils;
 import android.widget.Toast;
 
 import com.google.android.apps.muzei.api.Artwork;
 import com.google.android.apps.muzei.api.RemoteMuzeiArtSource;
 import com.google.android.apps.muzei.api.UserCommand;
+import com.tasomaniac.muzei.earthview.data.DownloadUrl;
+import com.tasomaniac.muzei.earthview.data.MapsLink;
+import com.tasomaniac.muzei.earthview.data.NextEarthView;
+import com.tasomaniac.muzei.earthview.data.RotateInterval;
+import com.tasomaniac.muzei.earthview.data.prefs.StringPreference;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import retrofit.MoshiConverterFactory;
 import retrofit.Response;
@@ -33,13 +39,10 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
     private static final int COMMAND_ID_EARTH_VIEW_MAIN = 4;
     private static final int COMMAND_ID_DEBUG_INFO = 51;
 
-    private static final int ROTATE_TIME_MILLIS = 24 * 60 * 60 * 1000; // rotate every 12 hours
-
-    public static final String PREF_KEY_NEXT_EARTH_VIEW = "next_earth_view";
-    public static final String PREF_KEY_MAPS_LINK = "maps_link";
-    public static final String PREF_KEY_DOWNLOAD_URL = "download_url";
-
-    SharedPreferences prefs;
+    @Inject @RotateInterval StringPreference rotateIntervalPref;
+    @Inject @DownloadUrl StringPreference downloadUrlPref;
+    @Inject @MapsLink StringPreference mapsLinkPref;
+    @Inject @NextEarthView StringPreference nextEarthViewPref;
 
     public EarthViewArtSource() {
         super(SOURCE_NAME);
@@ -48,6 +51,8 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
     @Override
     public void onCreate() {
         super.onCreate();
+        App.get(this).component().inject(this);
+
         List<UserCommand> commands = new ArrayList<>();
         commands.add(new UserCommand(BUILTIN_COMMAND_ID_NEXT_ARTWORK));
 
@@ -60,7 +65,6 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
         }
         setUserCommands(commands);
 
-        prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
     }
 
     @Override
@@ -72,29 +76,39 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
                 .build();
         EarthViewService service = retrofit.create(EarthViewService.class);
 
-        final String nextLink = prefs.getString(PREF_KEY_NEXT_EARTH_VIEW, EarthViewService.FIRST_EARTH_VIEW);
+        final String nextLink = nextEarthViewPref.get();
         try {
-            final Response<EartView> response = service.nextEartView(nextLink).execute();
+            final Response<EarthView> response = service.nextEartView(nextLink).execute();
 
             if (response.isSuccess()) {
-                EartView eartView = response.body();
+                EarthView earthView = response.body();
 
-                prefs.edit()
-                        .putString(PREF_KEY_NEXT_EARTH_VIEW, eartView.getNextApi())
-                        .putString(PREF_KEY_MAPS_LINK, eartView.getMapsLink())
-                        .putString(PREF_KEY_DOWNLOAD_URL, eartView.getDownloadUrl())
-                        .apply();
+                nextEarthViewPref.set(earthView.getNextApi());
+                mapsLinkPref.set(earthView.getMapsLink());
+                downloadUrlPref.set(earthView.getDownloadUrl());
 
                 publishArtwork(new Artwork.Builder()
-                        .title(eartView.getTitle())
-                        .byline(eartView.getAttribution())
-                        .imageUri(Uri.parse(eartView.getPhotoUrl()))
-                        .token(String.valueOf(eartView.getId()))
+                        .title(earthView.getTitle())
+                        .byline(earthView.getAttribution())
+                        .imageUri(Uri.parse(earthView.getPhotoUrl()))
+                        .token(String.valueOf(earthView.getId()))
                         .viewIntent(new Intent(Intent.ACTION_VIEW,
-                                Uri.parse(EarthViewService.BASE_URL + eartView.getUrl())))
+                                Uri.parse(EarthViewService.BASE_URL + earthView.getUrl())))
                         .build());
 
-                scheduleUpdate(System.currentTimeMillis() + ROTATE_TIME_MILLIS);
+                long rotateInterval;
+                try {
+                    rotateInterval = Integer.parseInt(rotateIntervalPref.get())
+                            * DateUtils.HOUR_IN_MILLIS;
+                } catch (NumberFormatException e) {
+                    rotateInterval = DateUtils.DAY_IN_MILLIS;
+                }
+
+                if (rotateInterval != 0) {
+                    scheduleUpdate(System.currentTimeMillis() + rotateInterval);
+                } else {
+                    unscheduleUpdate();
+                }
             }
         } catch (Exception e) {
             throw new RetryException(e);
@@ -124,7 +138,7 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
         } else if (COMMAND_ID_DOWNLOAD == id) {
             if (!checkValidArtwork(R.string.error_no_image_to_download)) return;
 
-            final String downloadUrl = prefs.getString(PREF_KEY_DOWNLOAD_URL, null);
+            final String downloadUrl = downloadUrlPref.get();
             if (downloadUrl != null) {
                 DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
                 DownloadManager.Request request = new DownloadManager.Request(
@@ -140,7 +154,7 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
 
         } else if (COMMAND_ID_VIEW_IN_GOOGLE_MAPS == id) {
 
-            final String mapsLink = prefs.getString(PREF_KEY_MAPS_LINK, null);
+            final String mapsLink = mapsLinkPref.get();
             if (mapsLink != null) {
                 Intent viewArchiveIntent = new Intent(Intent.ACTION_VIEW,
                         Uri.parse(mapsLink));
