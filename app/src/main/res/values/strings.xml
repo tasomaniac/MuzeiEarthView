@@ -33,6 +33,8 @@
   <string name="permission_storage_rationale">External Storage permission is required to show the downloaded wallpapers.</string>
   <string name="permision_available_storage">Storage Permissions have been granted. Wallpapers can be used now.</string>
   <string name="permissions_not_granted">Permissions were not granted. Please give permission to use the app.</string>
+  <string name="pref_key_category_integrations">pref_category_integrations</string>
+  <string name="permission_storage_title">Storage Permission</string>
 
   <string-array name="action_rotate_interval_choices" translatable="false">
     <item>@string/action_rotate_interval_none</item>

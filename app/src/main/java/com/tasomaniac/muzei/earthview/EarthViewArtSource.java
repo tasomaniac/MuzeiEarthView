@@ -78,7 +78,9 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
                 != PackageManager.PERMISSION_GRANTED) {
 
             //Start Settings Activity to request permissions.
-            startActivity(new Intent(this, SettingsActivity.class));
+            startActivity(new Intent(this, SettingsActivity.class)
+                    .putExtra(SettingsActivity.EXTRA_FROM_BACKGROUND, true)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
             return;
         }
 
@@ -155,11 +157,11 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
                 DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
                 DownloadManager.Request request = new DownloadManager.Request(
                         Uri.parse(EarthViewService.BASE_URL + downloadUrl))
-                    .setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES,
-                            getCurrentArtwork().getToken() + ".jpg")
-                    .setMimeType("image/*")
-                    .setVisibleInDownloadsUi(true)
-                    .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                        .setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES,
+                                getCurrentArtwork().getToken() + ".jpg")
+                        .setMimeType("image/*")
+                        .setVisibleInDownloadsUi(true)
+                        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
                 request.allowScanningByMediaScanner();
                 dm.enqueue(request);
             }

@@ -95,6 +95,7 @@ dependencies {
 
     compile "com.android.support:support-v4:$supportLibVersion"
     compile "com.android.support:appcompat-v7:$supportLibVersion"
+    compile "com.android.support:preference-v14:$supportLibVersion"
     compile "com.android.support:design:$supportLibVersion"
 
     compile "com.google.android.gms:play-services-analytics:7.8.0"

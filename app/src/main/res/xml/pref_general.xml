@@ -26,7 +26,9 @@
     android:title="@string/action_rotate_interval" />
 
 
-  <PreferenceCategory android:title="@string/pref_title_integrations">
+  <PreferenceCategory
+    android:key="@string/pref_key_category_integrations"
+    android:title="@string/pref_title_integrations">
 
     <!-- Muzei App Check Preference-->
     <com.tasomaniac.muzei.earthview.ui.IntegrationPreference
