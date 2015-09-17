@@ -59,7 +59,7 @@ public class IntegrationPreference extends CheckBoxPreference {
     private void initialize(Context context, AttributeSet attrs) {
         App.get(context).component().inject(this);
 
-        setWidgetLayoutResource(R.layout.preference_widget_error);
+        setWidgetLayoutResource(R.layout.eartview_preference_widget_error);
         setDefaultValue(false);
 
         final TypedArray sa = context.obtainStyledAttributes(attrs,

@@ -35,8 +35,8 @@
       android:key="@string/pref_key_muzei_integration"
       android:persistent="false"
       android:defaultValue="true"
-      android:summaryOn="@string/pref_summart_muzei_installed"
-      android:summaryOff="@string/pref_summary_muzei_not_installed"
+      android:summaryOn="@string/pref_summary_muzei_not_installed"
+      android:summaryOff="@string/pref_summart_muzei_installed"
       android:title="@string/pref_title_muzei_integration">
       <intent
         android:targetClass="com.google.android.apps.muzei.settings.SettingsActivity"
