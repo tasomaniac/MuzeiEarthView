@@ -16,6 +16,7 @@ def buildTime = new Date().format("yyyy-MM-dd'T'HH:mm'Z'", TimeZone.getTimeZone(
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
+    useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
         applicationId "com.tasomaniac.muzei.earthview"
@@ -26,7 +27,8 @@ android {
         buildConfigField "String", "GIT_SHA", "\"${gitSha}\""
         buildConfigField "String", "BUILD_TIME", "\"${buildTime}\""
 
-        buildConfigField "String", "ANALYTICS_KEY", "\"\""
+        buildConfigField "String", "ANALYTICS_KEY", local_properties.analytics_key != null ?
+                "\"" + local_properties.analytics_key + "\"" : "\"\""
 
         resConfigs "en"
     }
@@ -53,8 +55,9 @@ android {
         }
 
         release {
-            minifyEnabled false
-            shrinkResources false
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
     }
