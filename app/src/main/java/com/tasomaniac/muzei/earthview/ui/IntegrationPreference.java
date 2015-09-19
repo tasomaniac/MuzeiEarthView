@@ -78,13 +78,8 @@ public class IntegrationPreference extends CheckBoxPreference {
     public void onAttached() {
         super.onAttached();
         originalIntent = getIntent();
-
         if (originalIntent != null && !hasIntent(alternativeIntent)) {
-            ComponentName component = originalIntent.getComponent();
-            if (component != null) {
-                alternativeIntent = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("market://details?id=" + component.getPackageName()));
-            }
+            alternativeIntent = marketIntent(originalIntent);
         }
         checkState();
     }
@@ -123,6 +118,23 @@ public class IntegrationPreference extends CheckBoxPreference {
         if (packageName != null && className != null) {
             alternativeIntent.setComponent(new ComponentName(packageName, className));
         }
+    }
+
+    private Intent marketIntent(Intent originalIntent) {
+        ComponentName component = originalIntent.getComponent();
+        if (component != null) {
+            final String packageName = component.getPackageName();
+            Intent marketIntent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("market://details?id=" + packageName));
+            if (!hasIntent(marketIntent)) {
+                marketIntent = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("https://play.google.com/store/apps/details?id=" + packageName));
+            }
+            if (hasIntent(marketIntent)) {
+                return marketIntent;
+            }
+        }
+        return null;
     }
 
     @Override
