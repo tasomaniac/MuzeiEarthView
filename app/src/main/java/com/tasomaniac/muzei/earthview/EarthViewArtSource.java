@@ -43,7 +43,7 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
     private static final int COMMAND_ID_EARTH_VIEW_MAIN = 4;
     private static final int COMMAND_ID_DEBUG_INFO = 51;
 
-    @Inject @RotateInterval StringPreference rotateIntervalPref;
+    @Inject @RotateInterval String rotateInterval;
     @Inject @DownloadUrl StringPreference downloadUrlPref;
     @Inject @MapsLink StringPreference mapsLinkPref;
     @Inject @NextEarthView StringPreference nextEarthViewPref;
@@ -110,16 +110,16 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
                                 Uri.parse(EarthViewService.BASE_URL + earthView.getUrl())))
                         .build());
 
-                long rotateInterval;
+                long rotateIntervalNumber;
                 try {
-                    rotateInterval = Integer.parseInt(rotateIntervalPref.get())
+                    rotateIntervalNumber = Integer.parseInt(rotateInterval)
                             * DateUtils.HOUR_IN_MILLIS;
                 } catch (NumberFormatException e) {
-                    rotateInterval = DateUtils.DAY_IN_MILLIS;
+                    rotateIntervalNumber = DateUtils.DAY_IN_MILLIS;
                 }
 
-                if (rotateInterval != 0) {
-                    scheduleUpdate(System.currentTimeMillis() + rotateInterval);
+                if (rotateIntervalNumber != 0) {
+                    scheduleUpdate(System.currentTimeMillis() + rotateIntervalNumber);
                 } else {
                     unscheduleUpdate();
                 }

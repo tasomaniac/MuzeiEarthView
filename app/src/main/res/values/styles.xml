@@ -16,42 +16,31 @@
     <item name="preferenceStyle">@style/EarthView.Preference</item>
     <item name="preferenceCategoryStyle">@style/EarthView.Preference.Category</item>
     <item name="checkBoxPreferenceStyle">@style/EarthView.Preference.CheckBoxPreference</item>
-    <item name="yesNoPreferenceStyle">@style/EarthView.Preference.DialogPreference.YesNoPreference
-    </item>
     <item name="dialogPreferenceStyle">@style/EarthView.Preference.DialogPreference</item>
     <item name="preferenceScreenStyle">@style/EarthView.Preference</item>
   </style>
 
   <style name="EarthView.Preference" parent="">
-    <item name="layout">@layout/eartview_preference</item>
-    <item name="android:layout">@layout/eartview_preference</item>
+    <item name="layout">@layout/preference_fix</item>
+    <item name="android:layout">@layout/preference_fix</item>
   </style>
 
   <style name="EarthView.Preference.Category">
-    <item name="layout">@layout/eartview_preference_category</item>
+    <item name="layout">@layout/preference_category_fix</item>
     <item name="shouldDisableView">false</item>
     <item name="selectable">false</item>
-    <item name="android:layout">@layout/eartview_preference_category</item>
+    <item name="android:layout">@layout/preference_category_fix</item>
     <item name="android:shouldDisableView">false</item>
     <item name="android:selectable">false</item>
   </style>
 
   <style name="EarthView.Preference.CheckBoxPreference">
-    <item name="widgetLayout">@layout/eartview_preference_widget_checkbox</item>
-    <item name="android:widgetLayout">@layout/eartview_preference_widget_checkbox</item>
+    <item name="widgetLayout">@layout/preference_widget_checkbox_fix</item>
+    <item name="android:widgetLayout">@layout/preference_widget_checkbox_fix</item>
   </style>
 
   <style name="EarthView.Preference.DialogPreference">
     <item name="android:positiveButtonText">@android:string/ok</item>
     <item name="android:negativeButtonText">@android:string/cancel</item>
-  </style>
-
-  <style name="EarthView.Preference.DialogPreference.YesNoPreference">
-    <item name="android:positiveButtonText">@android:string/yes</item>
-    <item name="android:negativeButtonText">@android:string/no</item>
-  </style>
-
-  <style name="EarthView.Preference.DialogPreference.EditTextPreference">
-    <!--<item name="android:dialogLayout">@layout/preference_dialog_edittext</item>-->
   </style>
 </resources>

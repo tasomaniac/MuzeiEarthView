@@ -27,7 +27,7 @@
   <string name="pref_title_integrations">Integrations</string>
   <string name="pref_key_muzei_integration">pref_muzei_integration</string>
   <string name="pref_title_muzei_integration">Muzei App Integration</string>
-  <string name="pref_summart_muzei_installed">Open Muzei settings to select "Earth View" as your source.</string>
+  <string name="pref_summary_muzei_installed">Open Muzei settings to select "Earth View" as your source.</string>
   <string name="pref_summary_muzei_not_installed">Click here to install Muzei Wallpaper for this app to set your wallpaper.</string>
 
   <string name="permission_storage_rationale">External Storage permission is required to show the downloaded wallpapers.</string>

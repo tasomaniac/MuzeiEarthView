@@ -1,7 +1,6 @@
 package com.tasomaniac.muzei.earthview;
 
 import android.app.Application;
-import android.content.ContentResolver;
 import android.content.pm.PackageManager;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
@@ -30,11 +29,6 @@ final class AppModule {
     @Provides @Singleton
     Application application() {
         return app;
-    }
-
-    @Provides @Singleton
-    ContentResolver provideContentResolver() {
-        return app.getContentResolver();
     }
 
     @Provides @Singleton

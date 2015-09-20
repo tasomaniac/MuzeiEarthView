@@ -2,7 +2,6 @@ package com.tasomaniac.muzei.earthview.ui;
 
 import android.annotation.TargetApi;
 import android.content.ComponentName;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -26,8 +25,6 @@ public class IntegrationPreference extends CheckBoxPreference {
 
     @Inject
     PackageManager packageManager;
-    @Inject
-    ContentResolver contentResolver;
 
     AppInstallEnabler appInstallEnabler;
 
@@ -59,7 +56,7 @@ public class IntegrationPreference extends CheckBoxPreference {
     private void initialize(Context context, AttributeSet attrs) {
         App.get(context).component().inject(this);
 
-        setWidgetLayoutResource(R.layout.eartview_preference_widget_error);
+        setWidgetLayoutResource(R.layout.preference_widget_error_fix);
         setDefaultValue(false);
 
         final TypedArray sa = context.obtainStyledAttributes(attrs,
