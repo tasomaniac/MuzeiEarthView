@@ -1,29 +1,24 @@
-<!--
-  Copyright 2013 Google Inc.
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-
-      http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
-  -->
-
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-  >
-
-  <ListPreference
-    android:key="@string/pref_key_rotate_interval"
-    android:defaultValue="24"
-    android:entries="@array/action_rotate_interval_choices"
-    android:entryValues="@array/action_rotate_interval_values"
+  <PreferenceCategory
     android:dependency="@string/pref_key_muzei_integration"
-    android:title="@string/action_rotate_interval" />
+    android:key="@string/pref_key_category_general"
+    android:title="@string/pref_title_general">
+
+    <ListPreference
+      android:defaultValue="24"
+      android:entries="@array/action_rotate_interval_choices"
+      android:entryValues="@array/action_rotate_interval_values"
+      android:key="@string/pref_key_rotate_interval"
+      android:title="@string/action_rotate_interval"/>
+
+    <CheckBoxPreference
+      android:key="@string/pref_key_launcher_intent"
+      android:defaultValue="false"
+      android:title="@string/pref_title_launcher_intent"
+      android:summaryOn="@string/pref_summary_launcher_intent_on"
+      android:summaryOff="@string/pref_summary_launcher_intent_off"/>
+  </PreferenceCategory>
 
 
   <PreferenceCategory
@@ -32,11 +27,11 @@
 
     <!-- Muzei App Check Preference-->
     <com.tasomaniac.muzei.earthview.ui.IntegrationPreference
+      android:defaultValue="true"
       android:key="@string/pref_key_muzei_integration"
       android:persistent="false"
-      android:defaultValue="true"
-      android:summaryOn="@string/pref_summary_muzei_not_installed"
       android:summaryOff="@string/pref_summary_muzei_installed"
+      android:summaryOn="@string/pref_summary_muzei_not_installed"
       android:title="@string/pref_title_muzei_integration">
       <intent
         android:targetClass="com.google.android.apps.muzei.settings.SettingsActivity"

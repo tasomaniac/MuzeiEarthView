@@ -15,7 +15,6 @@
   <style name="EarthView.PreferenceThemeOverlay" parent="@style/PreferenceThemeOverlay.v14.Material">
     <item name="preferenceStyle">@style/EarthView.Preference</item>
     <item name="preferenceCategoryStyle">@style/EarthView.Preference.Category</item>
-    <item name="checkBoxPreferenceStyle">@style/EarthView.Preference.CheckBoxPreference</item>
     <item name="dialogPreferenceStyle">@style/EarthView.Preference.DialogPreference</item>
     <item name="preferenceScreenStyle">@style/EarthView.Preference</item>
   </style>
@@ -32,11 +31,6 @@
     <item name="android:layout">@layout/preference_category_fix</item>
     <item name="android:shouldDisableView">false</item>
     <item name="android:selectable">false</item>
-  </style>
-
-  <style name="EarthView.Preference.CheckBoxPreference">
-    <item name="widgetLayout">@layout/preference_widget_checkbox_fix</item>
-    <item name="android:widgetLayout">@layout/preference_widget_checkbox_fix</item>
   </style>
 
   <style name="EarthView.Preference.DialogPreference">

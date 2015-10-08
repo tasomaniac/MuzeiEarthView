@@ -57,6 +57,8 @@ public class SettingsFragment extends PreferenceFragmentCompat
     public static final String ACTION_HANDLE_COMMAND = "com.google.android.apps.muzei.api.action.HANDLE_COMMAND";
     public static final String EXTRA_COMMAND_ID = "com.google.android.apps.muzei.api.extra.COMMAND_ID";
 
+    private static final String LAUNCHER_ACTIVITY_NAME = "com.tasomaniac.muzei.earthview.ui.MainActivity";
+
     /**
      * Id to identify a storage permission request.
      */
@@ -185,6 +187,22 @@ public class SettingsFragment extends PreferenceFragmentCompat
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
         new BackupManager(getActivity()).dataChanged();
+
+        // Potentially enable/disable the launcher activity if the settings button
+        // preference has changed.
+        final String launcherIntentKey = getString(R.string.pref_key_launcher_intent);
+        if (isAdded() && launcherIntentKey.equals(s)) {
+
+            final boolean hideLauncher = sharedPreferences.getBoolean(launcherIntentKey, false);
+            getActivity().getPackageManager().setComponentEnabledSetting(
+                    new ComponentName(
+                            getActivity().getPackageName(),
+                            LAUNCHER_ACTIVITY_NAME),
+                    hideLauncher
+                            ? PackageManager.COMPONENT_ENABLED_STATE_DISABLED
+                            : PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                    PackageManager.DONT_KILL_APP);
+        }
     }
 
     /**

@@ -36,13 +36,18 @@
 
     <activity
       android:name=".ui.SettingsActivity"
-      android:launchMode="singleTask">
+      android:launchMode="singleTask"
+      android:exported="true"/>
 
+    <activity-alias
+      android:name=".ui.MainActivity"
+      android:targetActivity=".ui.SettingsActivity"
+      android:enabled="true">
       <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
-        <category android:name="android.intent.category.LAUNCHER"/>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
-    </activity>
+    </activity-alias>
 
     <meta-data
       android:name="io.fabric.ApiKey"

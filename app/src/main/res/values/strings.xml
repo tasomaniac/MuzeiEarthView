@@ -13,6 +13,9 @@
 
   <string name="settings_label">Earth View Settings</string>
 
+  <string name="pref_key_category_general">pref_category_general</string>
+  <string name="pref_title_general">General</string>
+
   <string name="action_rotate_interval">Change interval</string>
   <string name="action_rotate_interval_none">Don\'t change wallpaper</string>
   <string name="action_rotate_interval_1h">Every hour</string>
@@ -23,8 +26,14 @@
   <string name="done">Done</string>
 
   <string name="pref_key_rotate_interval">rotate_interval</string>
+  <string name="pref_key_launcher_intent">pref_launcher_intent</string>
+  <string name="pref_title_launcher_intent">Hide App Icon</string>
+  <string name="pref_summary_launcher_intent_on">App icon is hidden.</string>
+  <string name="pref_summary_launcher_intent_off">App icon is visible on homescreen.</string>
 
+  <string name="pref_key_category_integrations">pref_category_integrations</string>
   <string name="pref_title_integrations">Integrations</string>
+
   <string name="pref_key_muzei_integration">pref_muzei_integration</string>
   <string name="pref_title_muzei_integration">Muzei App Integration</string>
   <string name="pref_summary_muzei_installed">Open Muzei settings to select "Earth View" as your source.</string>
@@ -32,7 +41,6 @@
 
   <string name="permission_storage_rationale">External Storage permission is required to show the downloaded wallpapers.</string>
   <string name="permision_available_storage">Storage Permissions have been granted. Wallpapers can be used now.</string>
-  <string name="pref_key_category_integrations">pref_category_integrations</string>
   <string name="permission_storage_title">Storage Permission</string>
 
   <string-array name="action_rotate_interval_choices" translatable="false">
