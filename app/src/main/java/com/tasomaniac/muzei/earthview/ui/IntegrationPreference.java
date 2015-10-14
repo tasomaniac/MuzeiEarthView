@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.preference.CheckBoxPreference;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -124,8 +125,8 @@ public class IntegrationPreference extends CheckBoxPreference {
             Intent marketIntent = new Intent(Intent.ACTION_VIEW,
                     Uri.parse("market://details?id=" + packageName));
             if (!hasIntent(marketIntent)) {
-                marketIntent = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("https://play.google.com/store/apps/details?id=" + packageName));
+                marketIntent.setData(Uri.parse(
+                        "https://play.google.com/store/apps/details?id=" + packageName));
             }
             if (hasIntent(marketIntent)) {
                 return marketIntent;
@@ -167,7 +168,7 @@ public class IntegrationPreference extends CheckBoxPreference {
 
     @NonNull
     private SpannableString getErrorString(CharSequence originalString) {
-        int errorColor = getContext().getResources().getColor(R.color.error_color);
+        int errorColor = ContextCompat.getColor(getContext(), R.color.error_color);
         SpannableString errorSpan = new SpannableString(originalString);
         errorSpan.setSpan(new ForegroundColorSpan(errorColor), 0, errorSpan.length(), 0);
         return errorSpan;
