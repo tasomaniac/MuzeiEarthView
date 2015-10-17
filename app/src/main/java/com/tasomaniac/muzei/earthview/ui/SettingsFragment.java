@@ -38,6 +38,7 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import android.view.View;
 
 import com.google.android.apps.muzei.api.MuzeiArtSource;
+import com.tasomaniac.android.widget.IntegrationPreference;
 import com.tasomaniac.muzei.earthview.App;
 import com.tasomaniac.muzei.earthview.BuildConfig;
 import com.tasomaniac.muzei.earthview.EarthViewArtSource;

@@ -111,6 +111,8 @@ dependencies {
 
     compile 'com.google.android.apps.muzei:muzei-api:2.0'
 
+    compile 'com.tasomaniac:integrationpreference-support:0.1-SNAPSHOT'
+
     // Crashlytics Kit
     compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
         transitive = true

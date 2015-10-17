@@ -18,7 +18,4 @@
   <color name="theme_primary_dark">#303F9F</color>
   <color name="theme_primary">#3F51B5</color>
   <color name="theme_accent">#00BCD4</color>
-
-  <color name="error_color">#FFDD2C00</color>
-
 </resources>

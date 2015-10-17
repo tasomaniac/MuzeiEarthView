@@ -26,7 +26,7 @@
     android:title="@string/pref_title_integrations">
 
     <!-- Muzei App Check Preference-->
-    <com.tasomaniac.muzei.earthview.ui.IntegrationPreference
+    <com.tasomaniac.android.widget.IntegrationPreference
       android:defaultValue="true"
       android:key="@string/pref_key_muzei_integration"
       android:persistent="false"
@@ -36,7 +36,7 @@
       <intent
         android:targetClass="com.google.android.apps.muzei.settings.SettingsActivity"
         android:targetPackage="net.nurik.roman.muzei"/>
-    </com.tasomaniac.muzei.earthview.ui.IntegrationPreference>
+    </com.tasomaniac.android.widget.IntegrationPreference>
 
   </PreferenceCategory>
 

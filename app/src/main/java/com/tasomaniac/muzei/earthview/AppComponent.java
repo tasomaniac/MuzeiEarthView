@@ -1,8 +1,8 @@
 package com.tasomaniac.muzei.earthview;
 
 
+import com.tasomaniac.android.widget.IntegrationPreference;
 import com.tasomaniac.muzei.earthview.data.DataModule;
-import com.tasomaniac.muzei.earthview.ui.IntegrationPreference;
 import com.tasomaniac.muzei.earthview.ui.SettingsFragment;
 
 import javax.inject.Singleton;
