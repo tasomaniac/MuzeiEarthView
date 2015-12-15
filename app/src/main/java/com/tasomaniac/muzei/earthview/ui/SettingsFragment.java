@@ -89,7 +89,6 @@ public class SettingsFragment extends PreferenceFragmentCompat
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         forceShowPermissionDialog = getArguments().getBoolean(SettingsActivity.EXTRA_FROM_BACKGROUND);
     }
 

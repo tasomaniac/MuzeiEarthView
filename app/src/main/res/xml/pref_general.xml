@@ -13,6 +13,13 @@
       android:title="@string/action_rotate_interval"/>
 
     <CheckBoxPreference
+      android:key="@string/pref_key_wifi_only"
+      android:defaultValue="false"
+      android:title="@string/pref_title_wifi_only"
+      android:summaryOn="@string/pref_summary_wifi_only_on"
+      android:summaryOff="@string/pref_summary_wifi_only_off"/>
+
+    <CheckBoxPreference
       android:key="@string/pref_key_launcher_intent"
       android:defaultValue="false"
       android:title="@string/pref_title_launcher_intent"

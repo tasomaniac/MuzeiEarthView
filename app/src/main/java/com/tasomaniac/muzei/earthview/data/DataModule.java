@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.tasomaniac.muzei.earthview.R;
+import com.tasomaniac.muzei.earthview.data.prefs.BooleanPreference;
 import com.tasomaniac.muzei.earthview.data.prefs.StringPreference;
 
 import javax.inject.Singleton;
@@ -43,23 +44,31 @@ public final class DataModule {
     }
 
     @Provides @Singleton @DownloadUrl
-    StringPreference provideDownloadUrlPreference(Application app,
-            SharedPreferences prefs) {
+    StringPreference provideDownloadUrlPreference(SharedPreferences prefs) {
         return new StringPreference(prefs,
                 PREF_KEY_DOWNLOAD_URL);
     }
 
     @Provides @Singleton @MapsLink
-    StringPreference provideMapsLinkPreference(Application app,
-            SharedPreferences prefs) {
+    StringPreference provideMapsLinkPreference(SharedPreferences prefs) {
         return new StringPreference(prefs, PREF_KEY_MAPS_LINK);
     }
 
     @Provides @Singleton @NextEarthView
-    StringPreference provideNextEarthViewPreference(Application app,
-            SharedPreferences prefs) {
+    StringPreference provideNextEarthViewPreference(SharedPreferences prefs) {
         return new StringPreference(prefs, PREF_KEY_NEXT_EARTH_VIEW,
                 FIRST_EARTH_VIEW);
     }
 
+    @Provides @Singleton
+    BooleanPreference providesWiFiOnlyPreference(Application app, SharedPreferences sharedPreferences) {
+        return new BooleanPreference(sharedPreferences,
+                app.getString(R.string.pref_key_wifi_only),
+                false);
+    }
+
+    @Provides
+    Boolean providesWiFiOnly(BooleanPreference colorReversePreference) {
+        return colorReversePreference.get();
+    }
 }

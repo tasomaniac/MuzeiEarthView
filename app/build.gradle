@@ -111,7 +111,7 @@ dependencies {
 
     compile 'com.google.android.apps.muzei:muzei-api:2.0'
 
-    compile 'com.tasomaniac:integrationpreference-support:0.1'
+    compile 'com.tasomaniac:integrationpreference-support:0.2'
 
     // Crashlytics Kit
     compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {

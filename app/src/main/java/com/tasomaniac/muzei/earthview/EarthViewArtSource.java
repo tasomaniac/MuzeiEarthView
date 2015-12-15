@@ -3,8 +3,11 @@ package com.tasomaniac.muzei.earthview;
 import android.Manifest;
 import android.app.DownloadManager;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
@@ -48,6 +51,8 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
     @Inject @MapsLink StringPreference mapsLinkPref;
     @Inject @NextEarthView StringPreference nextEarthViewPref;
 
+    @Inject Boolean wifiOnly;
+
     public EarthViewArtSource() {
         super(SOURCE_NAME);
     }
@@ -81,6 +86,15 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
             startActivity(new Intent(this, SettingsActivity.class)
                     .putExtra(SettingsActivity.EXTRA_FROM_BACKGROUND, true)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+            return;
+        }
+
+        // Skip the update only when
+        // scheduled request comes,
+        // wifi only setting is on
+        // and user is not connected to wifi
+        if (reason == UPDATE_REASON_SCHEDULED && wifiOnly && !isWifi()) {
+            scheduleUpdate(System.currentTimeMillis() + DateUtils.HOUR_IN_MILLIS);
             return;
         }
 
@@ -227,6 +241,12 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
             return false;
         }
         return true;
+    }
+    
+    public boolean isWifi() {
+        NetworkInfo ni = ((ConnectivityManager) getSystemService(
+                Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+        return ni != null && ni.getType() == ConnectivityManager.TYPE_WIFI;
     }
 }
 
