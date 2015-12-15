@@ -33,3 +33,4 @@ proguard/
 /build
 my-release-key.keystore
 *.iml
+tasomaniac.p12
