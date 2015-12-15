@@ -91,7 +91,7 @@ play {
 dependencies {
     def supportLibVersion = "23.1.1"
 
-    compile 'com.squareup.okhttp:okhttp:2.6.0'
+    compile 'com.squareup.okhttp:okhttp:2.7.0'
     compile 'com.squareup.okio:okio:1.6.0'
     compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
     compile 'com.squareup.retrofit:converter-moshi:2.0.0-beta2'
@@ -105,8 +105,8 @@ dependencies {
 
     compile 'com.jakewharton.timber:timber:4.1.0'
 
-    compile "com.google.dagger:dagger:2.0.2"
-    apt "com.google.dagger:dagger-compiler:2.0.2"
+    compile 'com.google.dagger:dagger:2.0.2'
+    apt 'com.google.dagger:dagger-compiler:2.0.2'
     provided 'org.glassfish:javax.annotation:10.0-b28'
 
     compile 'com.google.android.apps.muzei:muzei-api:2.0'
@@ -114,7 +114,7 @@ dependencies {
     compile 'com.tasomaniac:integrationpreference-support:0.1'
 
     // Crashlytics Kit
-    compile('com.crashlytics.sdk.android:crashlytics:2.5.4@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
         transitive = true
     }
 
