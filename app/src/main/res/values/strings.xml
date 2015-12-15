@@ -65,4 +65,6 @@
     <item>24</item>
     <item>72</item>
   </string-array>
+
+  <string name="error_install_muzei">Please install Muzei App first!</string>
 </resources>

@@ -1,11 +1,14 @@
 package com.tasomaniac.muzei.earthview.ui;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.tasomaniac.muzei.earthview.R;
 
@@ -39,7 +42,13 @@ public class SettingsActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            finish();
+
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            if (prefs.getBoolean(getString(R.string.pref_key_muzei_integration), false)) {
+                Toast.makeText(this, R.string.error_install_muzei, Toast.LENGTH_LONG).show();
+            } else {
+                finish();
+            }
             return true;
         }
 

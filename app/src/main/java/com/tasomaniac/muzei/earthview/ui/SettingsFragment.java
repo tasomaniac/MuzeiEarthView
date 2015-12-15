@@ -26,7 +26,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -101,6 +100,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
                 findPreference(R.string.pref_key_rotate_interval), rotateIntervalPref);
 
         muzeiPref = (IntegrationPreference) findPreference(R.string.pref_key_muzei_integration);
+        muzeiPref.setPersistent(true);
         integrationsCategory = (PreferenceCategory) findPreference(R.string.pref_key_category_integrations);
     }
 
@@ -122,7 +122,6 @@ public class SettingsFragment extends PreferenceFragmentCompat
                 REQUEST_STORAGE);
     }
 
-    @Nullable
     public Preference findPreference(@StringRes int keyResource) {
         return findPreference(getString(keyResource));
     }

@@ -242,11 +242,10 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
         }
         return true;
     }
-    
+
     public boolean isWifi() {
         NetworkInfo ni = ((ConnectivityManager) getSystemService(
                 Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
         return ni != null && ni.getType() == ConnectivityManager.TYPE_WIFI;
     }
 }
-
