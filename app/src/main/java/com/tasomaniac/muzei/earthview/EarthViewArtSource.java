@@ -20,6 +20,7 @@ import com.google.android.apps.muzei.api.Artwork;
 import com.google.android.apps.muzei.api.RemoteMuzeiArtSource;
 import com.google.android.apps.muzei.api.UserCommand;
 import com.tasomaniac.muzei.earthview.data.DownloadUrl;
+import com.tasomaniac.muzei.earthview.data.Injector;
 import com.tasomaniac.muzei.earthview.data.MapsLink;
 import com.tasomaniac.muzei.earthview.data.NextEarthView;
 import com.tasomaniac.muzei.earthview.data.RotateInterval;
@@ -60,7 +61,7 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
     @Override
     public void onCreate() {
         super.onCreate();
-        App.get(this).component().inject(this);
+        Injector.obtain(getApplicationContext()).inject(this);
 
         List<UserCommand> commands = new ArrayList<>();
         commands.add(new UserCommand(BUILTIN_COMMAND_ID_NEXT_ARTWORK));

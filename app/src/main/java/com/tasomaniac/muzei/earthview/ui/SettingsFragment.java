@@ -38,10 +38,10 @@ import android.view.View;
 
 import com.google.android.apps.muzei.api.MuzeiArtSource;
 import com.tasomaniac.android.widget.IntegrationPreference;
-import com.tasomaniac.muzei.earthview.App;
 import com.tasomaniac.muzei.earthview.BuildConfig;
 import com.tasomaniac.muzei.earthview.EarthViewArtSource;
 import com.tasomaniac.muzei.earthview.R;
+import com.tasomaniac.muzei.earthview.data.Injector;
 import com.tasomaniac.muzei.earthview.data.RotateInterval;
 import com.tasomaniac.muzei.earthview.data.prefs.StringPreference;
 
@@ -93,7 +93,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
-        App.get(getActivity()).component().inject(this);
+        Injector.obtain(getActivity().getApplicationContext()).inject(this);
         addPreferencesFromResource(R.xml.pref_general);
 
         bindPreferenceSummaryToValue(
