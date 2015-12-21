@@ -78,7 +78,7 @@ android {
 
     dexOptions {
         // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
-        preDexLibraries = rootProject.ext.preDexEnabled && !rootProject.ext.isTravis
+        preDexLibraries = rootProject.ext.preDexEnabled && !rootProject.ext.ci
     }
 }
 
@@ -101,7 +101,7 @@ dependencies {
     compile "com.android.support:preference-v14:$supportLibVersion"
     compile "com.android.support:design:$supportLibVersion"
 
-    compile "com.google.android.gms:play-services-analytics:8.3.0"
+    compile "com.google.android.gms:play-services-analytics:8.4.0"
 
     compile 'com.jakewharton.timber:timber:4.1.0'
 
