@@ -15,8 +15,9 @@ Installation
 What
 ----
 
-[![Get it on Google Play](art/screenshot-01.png)][1]
-[![Get it on Google Play](art/screenshot-02.png)][1]
+Muzei | Settings
+--- | ---
+[![Get it on Google Play](art/screenshot-01.png)][1] | [![Get it on Google Play](art/screenshot-02.png)][1]
 
 Earth View Wallpaper for [Muzei app](https://play.google.com/store/apps/details?id=net.nurik.roman.dashclock)
 from [Roman Nurik](https://plus.google.com/+RomanNurik).
