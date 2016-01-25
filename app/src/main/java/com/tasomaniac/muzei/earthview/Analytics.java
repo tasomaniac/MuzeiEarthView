@@ -1,11 +1,14 @@
 package com.tasomaniac.muzei.earthview;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
+import com.crashlytics.android.answers.CustomEvent;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
 import timber.log.Timber;
 
-interface Analytics {
+public interface Analytics {
 
     void sendScreenView(String screenName);
 
@@ -13,17 +16,21 @@ interface Analytics {
 
     void sendEvent(String category, String action, String label);
 
-    class GoogleAnalytics implements Analytics {
+    class AnalyticsImpl implements Analytics {
         private final Tracker tracker;
+        private final Answers answers;
 
-        public GoogleAnalytics(Tracker tracker) {
+        public AnalyticsImpl(Tracker tracker) {
             this.tracker = tracker;
+            answers = Answers.getInstance();
         }
 
         @Override
         public void sendScreenView(String screenName) {
             tracker.setScreenName(screenName);
             tracker.send(new HitBuilders.AppViewBuilder().build());
+
+            answers.logContentView(new ContentViewEvent().putContentName(screenName));
         }
 
         @Override
@@ -34,6 +41,10 @@ interface Analytics {
                     .setLabel(label)
                     .setValue(value)
                     .build());
+
+            answers.logCustom(new CustomEvent(category)
+                    .putCustomAttribute(action, label)
+                    .putCustomAttribute("value", value));
         }
 
         @Override

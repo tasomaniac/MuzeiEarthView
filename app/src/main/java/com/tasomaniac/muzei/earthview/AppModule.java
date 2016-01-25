@@ -44,7 +44,7 @@ final class AppModule {
         GoogleAnalytics googleAnalytics = GoogleAnalytics.getInstance(app);
         Tracker tracker = googleAnalytics.newTracker(BuildConfig.ANALYTICS_KEY);
         tracker.setSessionTimeout(300); // ms? s? better be s.
-        return new Analytics.GoogleAnalytics(tracker);
+        return new Analytics.AnalyticsImpl(tracker);
     }
 
     @Provides @Singleton
