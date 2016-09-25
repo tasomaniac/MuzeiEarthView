@@ -3,12 +3,13 @@ package com.tasomaniac.muzei.earthview;
 import android.app.Application;
 import android.content.pm.PackageManager;
 
-import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.Tracker;
-
-import java.util.Random;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
+import com.crashlytics.android.answers.CustomEvent;
+import com.tasomaniac.muzei.earthview.data.Analytics;
 
 import javax.inject.Singleton;
+import java.util.Random;
 
 import dagger.Module;
 import dagger.Provides;
@@ -36,19 +37,31 @@ final class AppModule {
         return app.getPackageManager();
     }
 
-    @Provides @Singleton Analytics provideAnalytics() {
+    @Provides @Singleton
+    Analytics provideAnalytics() {
         if (BuildConfig.DEBUG) {
             return new Analytics.DebugAnalytics();
         }
-
-        GoogleAnalytics googleAnalytics = GoogleAnalytics.getInstance(app);
-        Tracker tracker = googleAnalytics.newTracker(BuildConfig.ANALYTICS_KEY);
-        tracker.setSessionTimeout(300); // ms? s? better be s.
-        return new Analytics.AnalyticsImpl(tracker);
+        return new AnswersAnalytics();
     }
 
     @Provides @Singleton
     Random provideRandom() {
         return new Random();
+    }
+
+    private static class AnswersAnalytics implements Analytics {
+        private final Answers answers = Answers.getInstance();
+
+        @Override
+        public void sendScreenView(String screenName) {
+            answers.logContentView(new ContentViewEvent().putContentName(screenName));
+        }
+
+        @Override
+        public void sendEvent(String category, String action, String label) {
+            answers.logCustom(new CustomEvent(category)
+                                      .putCustomAttribute(action, label));
+        }
     }
 }
