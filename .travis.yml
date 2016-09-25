@@ -2,18 +2,17 @@ language: android
 
 android:
   components:
-    - platform-tools
     - tools
-    - android-23
-    - build-tools-23.0.2
+    - platform-tools
+    - android-24
+    - build-tools-24.0.2
     - extra-google-m2repository
     - extra-android-m2repository
 
 jdk:
-  - oraclejdk7
   - oraclejdk8
 
-script: "./gradlew assembleDebug"
+script: "./gradlew assemble"
 
 env:
   global:
