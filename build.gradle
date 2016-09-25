@@ -5,12 +5,10 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.2.0'
-        classpath 'com.jakewharton.hugo:hugo-plugin:1.2.1'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.11.3'
-        classpath 'com.github.triplet.gradle:play-publisher:1.1.4'
-
-        classpath 'io.fabric.tools:gradle:1.21.2'
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.13.0'
+        classpath 'com.github.triplet.gradle:play-publisher:1.2.0-beta1'
+        classpath 'io.fabric.tools:gradle:1.21.7'
     }
 }
 
@@ -28,8 +26,10 @@ ext {
 
     versionMajor = 1
     versionMinor = 3
-    versionPatch = 0
-    versionBuild = 0
+    versionBuild = 1
+
+    versionCode = versionMajor * 10000 + versionMinor * 1000 + versionBuild
+    versionName = "${versionMajor}.${versionMinor}"
 
     compileSdkVersion = 24
     buildToolsVersion = '24.0.2'
