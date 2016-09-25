@@ -42,7 +42,7 @@ import com.tasomaniac.muzei.earthview.BuildConfig;
 import com.tasomaniac.muzei.earthview.EarthViewArtSource;
 import com.tasomaniac.muzei.earthview.R;
 import com.tasomaniac.muzei.earthview.data.Injector;
-import com.tasomaniac.muzei.earthview.data.RotateInterval;
+import com.tasomaniac.muzei.earthview.data.prefs.RotateInterval;
 import com.tasomaniac.muzei.earthview.data.prefs.StringPreference;
 
 import javax.inject.Inject;
@@ -54,8 +54,8 @@ public class SettingsFragment extends PreferenceFragmentCompat
         ActivityCompat.OnRequestPermissionsResultCallback,
         Preference.OnPreferenceClickListener {
 
-    public static final String ACTION_HANDLE_COMMAND = "com.google.android.apps.muzei.api.action.HANDLE_COMMAND";
-    public static final String EXTRA_COMMAND_ID = "com.google.android.apps.muzei.api.extra.COMMAND_ID";
+    private static final String ACTION_HANDLE_COMMAND = "com.google.android.apps.muzei.api.action.HANDLE_COMMAND";
+    private static final String EXTRA_COMMAND_ID = "com.google.android.apps.muzei.api.extra.COMMAND_ID";
 
     private static final String LAUNCHER_ACTIVITY_NAME = "com.tasomaniac.muzei.earthview.ui.MainActivity";
 
@@ -93,7 +93,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
-        Injector.obtain(getActivity().getApplicationContext()).inject(this);
+        Injector.obtain(getContext()).inject(this);
         addPreferencesFromResource(R.xml.pref_general);
 
         bindPreferenceSummaryToValue(
@@ -179,6 +179,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
     @NonNull
     @Override
+    @SuppressWarnings("ConstantConditions")
     public View getView() {
         return super.getView();
     }

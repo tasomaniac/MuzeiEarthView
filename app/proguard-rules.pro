@@ -18,8 +18,8 @@
 
 -dontobfuscate
 
--keep interface com.tasomaniac.muzei.earthview.EarthViewService.** { *; }
--keep class com.tasomaniac.muzei.earthview.EarthView.** { *; }
+-keep interface com.tasomaniac.muzei.earthview.data.api.EarthViewApi.** { *; }
+-keep class com.tasomaniac.muzei.earthview.data.api.EarthView.** { *; }
 
 -keep class com.squareup.moshi.** { *; }
 -keep interface com.squareup.moshi.** { *; }

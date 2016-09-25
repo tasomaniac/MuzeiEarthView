@@ -6,7 +6,11 @@ import android.preference.PreferenceManager;
 
 import com.tasomaniac.muzei.earthview.R;
 import com.tasomaniac.muzei.earthview.data.prefs.BooleanPreference;
+import com.tasomaniac.muzei.earthview.data.prefs.DownloadUrl;
+import com.tasomaniac.muzei.earthview.data.prefs.NextEarthView;
+import com.tasomaniac.muzei.earthview.data.prefs.RotateInterval;
 import com.tasomaniac.muzei.earthview.data.prefs.StringPreference;
+import com.tasomaniac.muzei.earthview.data.prefs.WiFiOnly;
 
 import javax.inject.Singleton;
 
@@ -15,17 +19,16 @@ import dagger.Provides;
 
 @Module
 public final class DataModule {
-    public static final String DEFAULT_ROTATE_INTERVAL = "24";
+    private static final String DEFAULT_ROTATE_INTERVAL = "24";
 
-    public static final String PREF_KEY_NEXT_EARTH_VIEW = "next_earth_view";
-    public static final String PREF_KEY_MAPS_LINK = "maps_link";
-    public static final String PREF_KEY_DOWNLOAD_URL = "download_url";
+    private static final String PREF_KEY_NEXT_EARTH_VIEW = "next_earth_view";
+    private static final String PREF_KEY_MAPS_LINK = "maps_link";
+    private static final String PREF_KEY_DOWNLOAD_URL = "download_url";
 
-    String FIRST_EARTH_VIEW
+    private static final String FIRST_EARTH_VIEW
             = "http://earthview.withgoogle.com/_api/istanbul-turkey-1888.json";
 
-    @Provides
-    @Singleton
+    @Provides @Singleton
     SharedPreferences provideSharedPreferences(Application app) {
         return PreferenceManager.getDefaultSharedPreferences(app);
     }
@@ -60,15 +63,15 @@ public final class DataModule {
                 FIRST_EARTH_VIEW);
     }
 
-    @Provides @Singleton
+    @Provides @Singleton @WiFiOnly
     BooleanPreference providesWiFiOnlyPreference(Application app, SharedPreferences sharedPreferences) {
         return new BooleanPreference(sharedPreferences,
                 app.getString(R.string.pref_key_wifi_only),
                 false);
     }
 
-    @Provides
-    Boolean providesWiFiOnly(BooleanPreference colorReversePreference) {
-        return colorReversePreference.get();
+    @Provides @WiFiOnly
+    Boolean providesWiFiOnly(@WiFiOnly BooleanPreference pref) {
+        return pref.get();
     }
 }

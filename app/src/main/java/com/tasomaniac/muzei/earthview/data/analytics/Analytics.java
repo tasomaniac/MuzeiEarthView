@@ -1,4 +1,4 @@
-package com.tasomaniac.muzei.earthview.data;
+package com.tasomaniac.muzei.earthview.data.analytics;
 
 import timber.log.Timber;
 

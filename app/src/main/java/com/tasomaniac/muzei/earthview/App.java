@@ -7,7 +7,6 @@ import android.util.Log;
 import com.crashlytics.android.Crashlytics;
 import com.tasomaniac.muzei.earthview.data.Injector;
 
-import hugo.weaving.DebugLog;
 import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
 
@@ -26,13 +25,9 @@ public class App extends Application {
             Timber.plant(new CrashReportingTree());
         }
 
-        buildComponentAndInject();
-    }
-
-    @DebugLog // Extracted for debugging.
-    public void buildComponentAndInject() {
-        component = AppComponent.Initializer.init(this);
-        component.inject(this);
+        component = DaggerAppComponent.builder()
+                .application(this)
+                .build();
     }
 
     @Override
