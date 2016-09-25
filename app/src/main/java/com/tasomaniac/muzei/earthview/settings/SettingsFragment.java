@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.tasomaniac.muzei.earthview.ui;
+package com.tasomaniac.muzei.earthview.settings;
 
 import android.Manifest;
 import android.app.backup.BackupManager;

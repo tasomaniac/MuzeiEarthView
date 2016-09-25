@@ -1,20 +1,22 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          package="com.tasomaniac.muzei.earthview">
+  xmlns:tools="http://schemas.android.com/tools"
+  package="com.tasomaniac.muzei.earthview">
 
-  <uses-permission android:name="android.permission.INTERNET"/>
+  <uses-permission android:name="android.permission.INTERNET" />
 
   <!-- Required by RemoteMuzeiArtSource -->
-  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-  <uses-permission android:name="android.permission.WAKE_LOCK"/>
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+  <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-  <application android:allowBackup="true"
-               android:fullBackupContent="true"
-               android:theme="@style/Theme.Muzei.EarthView"
-               android:name=".App"
-               android:label="@string/app_name"
-               android:icon="@mipmap/ic_launcher">
+  <application
+    android:name=".App"
+    android:allowBackup="true"
+    android:fullBackupContent="true"
+    android:icon="@mipmap/ic_launcher"
+    android:label="@string/app_name"
+    android:theme="@style/Theme.Muzei.EarthView"
+    tools:ignore="GoogleAppIndexingWarning">
 
     <service
       android:name=".EarthViewArtSource"
@@ -23,26 +25,26 @@
       android:label="@string/source_name"
       tools:ignore="ExportedService">
       <intent-filter>
-        <action android:name="com.google.android.apps.muzei.api.MuzeiArtSource"/>
+        <action android:name="com.google.android.apps.muzei.api.MuzeiArtSource" />
       </intent-filter>
 
       <meta-data
         android:name="color"
-        android:value="@color/theme_primary"/>
+        android:value="@color/theme_primary" />
       <meta-data
         android:name="settingsActivity"
-        android:value="com.tasomaniac.muzei.earthview.ui.SettingsActivity"/>
+        android:value="com.tasomaniac.muzei.earthview.settings.SettingsActivity" />
     </service>
 
     <activity
-      android:name=".ui.SettingsActivity"
-      android:launchMode="singleTask"
-      android:exported="true"/>
+      android:name=".settings.SettingsActivity"
+      android:exported="true"
+      android:launchMode="singleTask" />
 
     <activity-alias
       android:name=".ui.MainActivity"
-      android:targetActivity=".ui.SettingsActivity"
-      android:enabled="true">
+      android:enabled="true"
+      android:targetActivity=".settings.SettingsActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
@@ -51,7 +53,7 @@
 
     <meta-data
       android:name="io.fabric.ApiKey"
-      android:value="12d100ee6072b6f8a57cd79b03942ad742ba6916"/>
+      android:value="12d100ee6072b6f8a57cd79b03942ad742ba6916" />
   </application>
 
 </manifest>

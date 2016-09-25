@@ -1,4 +1,4 @@
-package com.tasomaniac.muzei.earthview.ui;
+package com.tasomaniac.muzei.earthview.settings;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;

@@ -29,7 +29,7 @@ import com.tasomaniac.muzei.earthview.data.prefs.NextEarthView;
 import com.tasomaniac.muzei.earthview.data.prefs.RotateInterval;
 import com.tasomaniac.muzei.earthview.data.prefs.StringPreference;
 import com.tasomaniac.muzei.earthview.data.prefs.WiFiOnly;
-import com.tasomaniac.muzei.earthview.ui.SettingsActivity;
+import com.tasomaniac.muzei.earthview.settings.SettingsActivity;
 
 import javax.inject.Inject;
 import java.io.IOException;

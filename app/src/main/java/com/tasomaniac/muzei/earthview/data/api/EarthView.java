@@ -22,9 +22,6 @@ public class EarthView {
     private String nextApi;
     private String nextUrl;
 
-    public EarthView() {
-    }
-
     public String getMapsLink() {
         return mapsLink;
     }
