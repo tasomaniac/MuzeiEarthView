@@ -4,7 +4,7 @@ buildscript {
         maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.0'
+        classpath 'com.android.tools.build:gradle:2.2.2'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.13.0'
         classpath 'com.github.triplet.gradle:play-publisher:1.2.0-beta1'
@@ -31,8 +31,8 @@ ext {
     versionCode = versionMajor * 10000 + versionMinor * 1000 + versionBuild
     versionName = "${versionMajor}.${versionMinor}"
 
-    compileSdkVersion = 24
-    buildToolsVersion = '24.0.2'
+    compileSdkVersion = 25
+    buildToolsVersion = '25.0.0'
 }
 
 task clean(type: Delete) {
