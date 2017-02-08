@@ -8,8 +8,6 @@ if (localPropertiesFile.exists()) {
     local_properties.load(localPropertiesFile.newDataInputStream())
 }
 
-def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
-
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
@@ -20,7 +18,6 @@ android {
         targetSdkVersion rootProject.ext.compileSdkVersion
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
-        buildConfigField "String", "GIT_SHA", "\"${gitSha}\""
 
         resConfigs "en"
     }
