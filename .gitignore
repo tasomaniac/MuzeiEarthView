@@ -31,6 +31,8 @@ proguard/
 /.idea/libraries
 .DS_Store
 /build
-my-release-key.keystore
+*.keystore
 *.iml
-tasomaniac.p12
+*.p12
+*.signing
+*.properties
