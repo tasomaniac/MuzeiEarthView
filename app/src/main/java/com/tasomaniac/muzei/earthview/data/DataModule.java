@@ -12,10 +12,9 @@ import com.tasomaniac.muzei.earthview.data.prefs.RotateInterval;
 import com.tasomaniac.muzei.earthview.data.prefs.StringPreference;
 import com.tasomaniac.muzei.earthview.data.prefs.WiFiOnly;
 
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
+import dagger.Reusable;
 
 @Module
 public final class DataModule {
@@ -28,50 +27,60 @@ public final class DataModule {
     private static final String FIRST_EARTH_VIEW
             = "http://earthview.withgoogle.com/_api/istanbul-turkey-1888.json";
 
-    @Provides @Singleton
-    SharedPreferences provideSharedPreferences(Application app) {
+    @Provides
+    static SharedPreferences provideSharedPreferences(Application app) {
         return PreferenceManager.getDefaultSharedPreferences(app);
     }
 
-    @Provides @Singleton @RotateInterval
-    StringPreference provideRotateIntervalPreference(Application app,
-            SharedPreferences prefs) {
-        return new StringPreference(prefs,
+    @Provides
+    @Reusable
+    @RotateInterval
+    static StringPreference provideRotateIntervalPreference(Application app,
+                                                     SharedPreferences prefs) {
+        return new StringPreference(
+                prefs,
                 app.getString(R.string.pref_key_rotate_interval),
-                DEFAULT_ROTATE_INTERVAL);
+                DEFAULT_ROTATE_INTERVAL
+        );
     }
 
-    @Provides @RotateInterval
-    String provideRotateInterval(@RotateInterval StringPreference pref) {
+    @Provides
+    @RotateInterval
+    static String provideRotateInterval(@RotateInterval StringPreference pref) {
         return pref.get();
     }
 
-    @Provides @Singleton @DownloadUrl
-    StringPreference provideDownloadUrlPreference(SharedPreferences prefs) {
-        return new StringPreference(prefs,
-                PREF_KEY_DOWNLOAD_URL);
+    @Provides
+    @Reusable
+    @DownloadUrl
+    static StringPreference provideDownloadUrlPreference(SharedPreferences prefs) {
+        return new StringPreference(prefs, PREF_KEY_DOWNLOAD_URL);
     }
 
-    @Provides @Singleton @MapsLink
-    StringPreference provideMapsLinkPreference(SharedPreferences prefs) {
+    @Provides
+    @Reusable
+    @MapsLink
+    static StringPreference provideMapsLinkPreference(SharedPreferences prefs) {
         return new StringPreference(prefs, PREF_KEY_MAPS_LINK);
     }
 
-    @Provides @Singleton @NextEarthView
-    StringPreference provideNextEarthViewPreference(SharedPreferences prefs) {
-        return new StringPreference(prefs, PREF_KEY_NEXT_EARTH_VIEW,
-                FIRST_EARTH_VIEW);
+    @Provides
+    @Reusable
+    @NextEarthView
+    static StringPreference provideNextEarthViewPreference(SharedPreferences prefs) {
+        return new StringPreference(prefs, PREF_KEY_NEXT_EARTH_VIEW, FIRST_EARTH_VIEW);
     }
 
-    @Provides @Singleton @WiFiOnly
-    BooleanPreference providesWiFiOnlyPreference(Application app, SharedPreferences sharedPreferences) {
-        return new BooleanPreference(sharedPreferences,
-                app.getString(R.string.pref_key_wifi_only),
-                false);
+    @Provides
+    @Reusable
+    @WiFiOnly
+    static BooleanPreference providesWiFiOnlyPreference(Application app, SharedPreferences sharedPreferences) {
+        return new BooleanPreference(sharedPreferences, app.getString(R.string.pref_key_wifi_only));
     }
 
-    @Provides @WiFiOnly
-    Boolean providesWiFiOnly(@WiFiOnly BooleanPreference pref) {
+    @Provides
+    @WiFiOnly
+    static Boolean providesWiFiOnly(@WiFiOnly BooleanPreference pref) {
         return pref.get();
     }
 }

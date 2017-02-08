@@ -31,11 +31,11 @@ public class SettingsActivity extends AppCompatActivity
         collapsingToolbar.setTitle(getString(R.string.settings_label));
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container,
-                            SettingsFragment.newInstance(
-                                    getIntent().getBooleanExtra(EXTRA_FROM_BACKGROUND, false)))
-                    .commit();
+            boolean forceShowPermission = getIntent().getBooleanExtra(EXTRA_FROM_BACKGROUND, false);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.fragment_container, SettingsFragment.newInstance(forceShowPermission))
+                    .commitNow();
         }
     }
 

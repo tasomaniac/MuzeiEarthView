@@ -31,7 +31,7 @@ public final class ApiModule {
     @Provides
     @Singleton
     EarthViewApi provideEarthViewApi(OkHttpClient client) {
-        final Retrofit retrofit = new Retrofit.Builder()
+        Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(MoshiConverterFactory.create())
                 .baseUrl(BASE_URL)
                 .client(client)
