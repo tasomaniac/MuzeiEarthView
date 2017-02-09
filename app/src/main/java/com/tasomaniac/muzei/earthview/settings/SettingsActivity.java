@@ -1,5 +1,7 @@
 package com.tasomaniac.muzei.earthview.settings;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -15,7 +17,13 @@ import com.tasomaniac.muzei.earthview.R;
 public class SettingsActivity extends AppCompatActivity
         implements ActivityCompat.OnRequestPermissionsResultCallback {
 
-    public static final String EXTRA_FROM_BACKGROUND = "extra_from_background";
+    public static final String EXTRA_REQUEST_PERMISSION = "request_permission";
+
+    public static Intent createForPermissionRequest(Context context) {
+        return new Intent(context, SettingsActivity.class)
+                .putExtra(SettingsActivity.EXTRA_REQUEST_PERMISSION, true)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    }
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +39,7 @@ public class SettingsActivity extends AppCompatActivity
         collapsingToolbar.setTitle(getString(R.string.settings_label));
 
         if (savedInstanceState == null) {
-            boolean forceShowPermission = getIntent().getBooleanExtra(EXTRA_FROM_BACKGROUND, false);
+            boolean forceShowPermission = getIntent().getBooleanExtra(EXTRA_REQUEST_PERMISSION, false);
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(R.id.fragment_container, SettingsFragment.newInstance(forceShowPermission))

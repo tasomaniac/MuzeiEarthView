@@ -82,10 +82,7 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
     @Override
     protected void onTryUpdate(int reason) throws RetryException {
         if (requiresPermission()) {
-            Intent settingsIntent = new Intent(this, SettingsActivity.class)
-                    .putExtra(SettingsActivity.EXTRA_FROM_BACKGROUND, true)
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(settingsIntent);
+            startActivity(SettingsActivity.createForPermissionRequest(this));
             return;
         }
 

@@ -77,7 +77,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
     public static SettingsFragment newInstance(boolean forceShowPermission) {
         SettingsFragment fragment = new SettingsFragment();
         Bundle args = new Bundle();
-        args.putBoolean(SettingsActivity.EXTRA_FROM_BACKGROUND, forceShowPermission);
+        args.putBoolean(SettingsActivity.EXTRA_REQUEST_PERMISSION, forceShowPermission);
         fragment.setArguments(args);
         return fragment;
     }
@@ -85,7 +85,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        forceShowPermissionDialog = getArguments().getBoolean(SettingsActivity.EXTRA_FROM_BACKGROUND);
+        forceShowPermissionDialog = getArguments().getBoolean(SettingsActivity.EXTRA_REQUEST_PERMISSION);
     }
 
     @Override
