@@ -74,9 +74,6 @@ public class SettingsFragment extends PreferenceFragmentCompat
     private boolean permissionDeniedDefinitely = false;
     private boolean forceShowPermissionDialog;
 
-    public SettingsFragment() {
-    }
-
     public static SettingsFragment newInstance(boolean forceShowPermission) {
         SettingsFragment fragment = new SettingsFragment();
         Bundle args = new Bundle();
@@ -107,6 +104,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
     private void addPermissionPreference() {
         if (permissionPref == null) {
             permissionPref = new IntegrationPreference(getContext());
+            permissionPref.setLayoutResource(R.layout.preference_fix);
             permissionPref.setTitle(R.string.permission_storage_title);
             permissionPref.setSummaryOn(R.string.permission_storage_rationale);
             permissionPref.setChecked(true);
