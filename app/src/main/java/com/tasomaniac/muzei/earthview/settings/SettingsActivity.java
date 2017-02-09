@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -14,8 +13,7 @@ import android.widget.Toast;
 
 import com.tasomaniac.muzei.earthview.R;
 
-public class SettingsActivity extends AppCompatActivity
-        implements ActivityCompat.OnRequestPermissionsResultCallback {
+public class SettingsActivity extends AppCompatActivity {
 
     public static final String EXTRA_REQUEST_PERMISSION = "request_permission";
 
