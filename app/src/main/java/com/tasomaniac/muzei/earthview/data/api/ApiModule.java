@@ -14,7 +14,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
 
 @Module
 public final class ApiModule {
-    public static final String BASE_URL = "http://earthview.withgoogle.com";
+    private static final String BASE_URL = "http://earthview.withgoogle.com";
     private static final int DISK_CACHE_SIZE = 5 * 1024 * 1024;
 
     @Provides

@@ -21,7 +21,6 @@ import com.google.android.apps.muzei.api.RemoteMuzeiArtSource;
 import com.google.android.apps.muzei.api.UserCommand;
 import com.tasomaniac.muzei.earthview.data.Injector;
 import com.tasomaniac.muzei.earthview.data.MapsLink;
-import com.tasomaniac.muzei.earthview.data.api.ApiModule;
 import com.tasomaniac.muzei.earthview.data.api.EarthView;
 import com.tasomaniac.muzei.earthview.data.api.EarthViewApi;
 import com.tasomaniac.muzei.earthview.data.prefs.DownloadUrl;
@@ -41,6 +40,7 @@ import java.util.List;
 import retrofit2.Response;
 
 public class EarthViewArtSource extends RemoteMuzeiArtSource {
+    private static final String BASE_URL = "http://earthview.withgoogle.com";
     private static final String SOURCE_NAME = "EarthViewArtSource";
 
     private static final int COMMAND_ID_SHARE = 1;
@@ -110,27 +110,25 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
             return;
         }
 
-        loadNextEarthView(nextEarthViewPref.get());
+        updateArtwork(nextEarthViewPref.get());
     }
 
-    private void loadNextEarthView(String nextEarthViewUrl) throws RetryException {
+    private void updateArtwork(String nextEarthViewUrl) throws RetryException {
+        Response<EarthView> response = loadNextEarthView(nextEarthViewUrl);
+        if (response.isSuccessful()) {
+            EarthView earthView = response.body();
+
+            updatePrefsForNextEarthView(earthView);
+
+            publishArtwork(createArtworkFrom(earthView));
+
+            updateSchedule();
+        }
+    }
+
+    private Response<EarthView> loadNextEarthView(String nextEarthViewUrl) throws RetryException {
         try {
-            final Response<EarthView> response = earthViewApi.nextEarthView(nextEarthViewUrl).execute();
-
-            if (response.isSuccessful()) {
-                EarthView earthView = response.body();
-
-                updatePrefsForNextEarthView(earthView);
-
-                publishArtwork(createArtworkFrom(earthView));
-
-                long nextUpdateTimeInMillis = nextUpdateTimeInMillis();
-                if (nextUpdateTimeInMillis != 0) {
-                    scheduleUpdate(System.currentTimeMillis() + nextUpdateTimeInMillis);
-                } else {
-                    unscheduleUpdate();
-                }
-            }
+            return earthViewApi.nextEarthView(nextEarthViewUrl).execute();
         } catch (IOException e) {
             throw new RetryException(e);
         }
@@ -143,16 +141,23 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
     }
 
     private Artwork createArtworkFrom(EarthView earthView) {
+        Intent viewIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(BASE_URL + earthView.getUrl()));
         return new Artwork.Builder()
                 .title(earthView.getTitle())
                 .byline(earthView.getAttribution())
                 .imageUri(Uri.parse(earthView.getPhotoUrl()))
                 .token(String.valueOf(earthView.getId()))
-                .viewIntent(new Intent(
-                        Intent.ACTION_VIEW,
-                        Uri.parse(ApiModule.BASE_URL + earthView.getUrl())
-                ))
+                .viewIntent(viewIntent)
                 .build();
+    }
+
+    private void updateSchedule() {
+        long nextUpdateTimeInMillis = nextUpdateTimeInMillis();
+        if (nextUpdateTimeInMillis != 0) {
+            scheduleUpdate(System.currentTimeMillis() + nextUpdateTimeInMillis);
+        } else {
+            unscheduleUpdate();
+        }
     }
 
     private long nextUpdateTimeInMillis() {
@@ -214,7 +219,7 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
         }
 
         String fileName = currentArtwork.getToken() + ".jpg";
-        Uri downloadUri = Uri.parse(ApiModule.BASE_URL + downloadUrl);
+        Uri downloadUri = Uri.parse(BASE_URL + downloadUrl);
 
         DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
         DownloadManager.Request request = new DownloadManager.Request(downloadUri)
