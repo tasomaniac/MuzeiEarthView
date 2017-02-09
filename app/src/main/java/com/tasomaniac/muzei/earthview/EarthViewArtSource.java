@@ -46,14 +46,24 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
     private static final int COMMAND_ID_SHARE = 1;
     private static final int COMMAND_ID_DOWNLOAD = 2;
     private static final int COMMAND_ID_VIEW_IN_GOOGLE_MAPS = 3;
-    private static final int COMMAND_ID_EARTH_VIEW_MAIN = 4;
     private static final int COMMAND_ID_DEBUG_INFO = 51;
+    public static final String MIME_TYPE_IMAGE = "image/*";
 
-    @Inject @RotateInterval String rotateInterval;
-    @Inject @DownloadUrl StringPreference downloadUrlPref;
-    @Inject @MapsLink StringPreference mapsLinkPref;
-    @Inject @NextEarthView StringPreference nextEarthViewPref;
-    @Inject @WiFiOnly Boolean wifiOnly;
+    @Inject
+    @RotateInterval
+    String rotateInterval;
+    @Inject
+    @DownloadUrl
+    StringPreference downloadUrlPref;
+    @Inject
+    @MapsLink
+    StringPreference mapsLinkPref;
+    @Inject
+    @NextEarthView
+    StringPreference nextEarthViewPref;
+    @Inject
+    @WiFiOnly
+    Boolean wifiOnly;
 
     @Inject EarthViewApi earthViewApi;
 
@@ -72,7 +82,6 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
         commands.add(new UserCommand(COMMAND_ID_SHARE, getString(R.string.action_share_artwork)));
         commands.add(new UserCommand(COMMAND_ID_DOWNLOAD, getString(R.string.action_download)));
         commands.add(new UserCommand(COMMAND_ID_VIEW_IN_GOOGLE_MAPS, getString(R.string.action_view_in_google_maps)));
-        commands.add(new UserCommand(COMMAND_ID_EARTH_VIEW_MAIN, getString(R.string.action_open_earth_view)));
         if (BuildConfig.DEBUG) {
             commands.add(new UserCommand(COMMAND_ID_DEBUG_INFO, "Debug info"));
         }
@@ -87,8 +96,8 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
 
             //Start Settings Activity to request permissions.
             startActivity(new Intent(this, SettingsActivity.class)
-                    .putExtra(SettingsActivity.EXTRA_FROM_BACKGROUND, true)
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                                  .putExtra(SettingsActivity.EXTRA_FROM_BACKGROUND, true)
+                                  .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
             return;
         }
 
@@ -157,7 +166,6 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
     @Override
     protected void onCustomCommand(int id) {
         super.onCustomCommand(id);
-
         switch (id) {
             case COMMAND_ID_SHARE:
                 shareArtwork();
@@ -168,96 +176,71 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
             case COMMAND_ID_VIEW_IN_GOOGLE_MAPS:
                 openInGoogleMaps();
                 break;
-            case COMMAND_ID_EARTH_VIEW_MAIN:
-                openInGoogleEarthView();
-                break;
             case COMMAND_ID_DEBUG_INFO:
                 displayDebugInfo();
                 break;
         }
     }
 
+    @SuppressWarnings("deprecation")
     private void shareArtwork() {
-        if (!checkValidArtwork(R.string.error_no_image_to_share)) {
+        Artwork currentArtwork = getCurrentArtwork();
+        if (currentArtwork == null) {
+            displayToastOnMainThread(R.string.error_no_image_to_share);
             return;
         }
 
-        String detailUrl = "https://g.co/ev/" + getCurrentArtwork().getToken();
+        String detailUrl = "https://g.co/ev/" + currentArtwork.getToken();
+        String title = currentArtwork.getTitle().trim();
+        String text = getString(R.string.artwork_share_text, title, detailUrl);
 
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.setType("text/plain");
-        shareIntent.putExtra(Intent.EXTRA_TEXT, "My Android wallpaper today is '"
-                + getCurrentArtwork().getTitle().trim()
-                + ". #MuzeiEarthView\n\n"
-                + detailUrl);
-        shareIntent = Intent.createChooser(shareIntent, "Share artwork");
-        shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(shareIntent);
+        Intent shareIntent = new Intent(Intent.ACTION_SEND)
+                .setType("text/plain")
+                .putExtra(Intent.EXTRA_TEXT, text)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        startActivity(Intent.createChooser(shareIntent, getString(R.string.action_share_artwork)));
     }
 
     private void downloadArtwork() {
-        if (!checkValidArtwork(R.string.error_no_image_to_download)) {
+        Artwork currentArtwork = getCurrentArtwork();
+        if (currentArtwork == null) {
+            displayToastOnMainThread(R.string.error_no_image_to_download);
             return;
         }
 
-        final String downloadUrl = downloadUrlPref.get();
-        if (downloadUrl != null) {
-            DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-            DownloadManager.Request request = new DownloadManager.Request(
-                    Uri.parse(ApiModule.BASE_URL + downloadUrl))
-                    .setDestinationInExternalPublicDir(
-                            Environment.DIRECTORY_PICTURES,
-                            getCurrentArtwork().getToken() + ".jpg")
-                    .setMimeType("image/*")
-                    .setVisibleInDownloadsUi(true)
-                    .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-            request.allowScanningByMediaScanner();
-            dm.enqueue(request);
+        String downloadUrl = downloadUrlPref.get();
+        if (downloadUrl == null) {
+            return;
         }
+
+        String fileName = currentArtwork.getToken() + ".jpg";
+        Uri downloadUri = Uri.parse(ApiModule.BASE_URL + downloadUrl);
+
+        DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+        DownloadManager.Request request = new DownloadManager.Request(downloadUri)
+                .setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES, fileName)
+                .setMimeType(MIME_TYPE_IMAGE)
+                .setVisibleInDownloadsUi(true)
+                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.allowScanningByMediaScanner();
+        dm.enqueue(request);
     }
 
-    private boolean checkValidArtwork(final int errorMessage) {
-        Artwork currentArtwork = getCurrentArtwork();
-        if (currentArtwork == null) {
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(EarthViewArtSource.this,
-                                   errorMessage,
-                                   Toast.LENGTH_SHORT).show();
-                }
-            });
-            return false;
-        }
-        return true;
+    private void displayToastOnMainThread(final int errorMessage) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(EarthViewArtSource.this, errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void openInGoogleMaps() {
         final String mapsLink = mapsLinkPref.get();
         if (mapsLink != null) {
-            Intent viewArchiveIntent = new Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse(mapsLink)
-            );
-            viewArchiveIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-            try {
-                startActivity(viewArchiveIntent);
-            } catch (ActivityNotFoundException ignored) {
-            }
-        }
-    }
-
-    private void openInGoogleEarthView() {
-        Intent viewArchiveIntent = new Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse("http://earthview.withgoogle.com/")
-        );
-        viewArchiveIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        try {
-            startActivity(viewArchiveIntent);
-        } catch (ActivityNotFoundException ignored) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(mapsLink))
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            safeStartActivity(intent);
         }
     }
 
@@ -275,11 +258,20 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(EarthViewArtSource.this,
-                               "Next update time: " + nextUpdateTime,
-                               Toast.LENGTH_LONG).show();
+                Toast.makeText(
+                        EarthViewArtSource.this,
+                        "Next update time: " + nextUpdateTime,
+                        Toast.LENGTH_LONG
+                ).show();
             }
         });
+    }
+
+    private void safeStartActivity(Intent viewArchiveIntent) {
+        try {
+            startActivity(viewArchiveIntent);
+        } catch (ActivityNotFoundException ignored) {
+        }
     }
 
     public boolean isWifi() {

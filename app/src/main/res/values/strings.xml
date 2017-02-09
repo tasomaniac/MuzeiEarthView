@@ -7,9 +7,9 @@
   <string name="error_no_image_to_download">No image to download.</string>
 
   <string name="action_share_artwork">Share artwork</string>
+  <string name="artwork_share_text">My #Android wallpaper today is %1$s. #MuzeiEarthView\n\n%2$s</string>
   <string name="action_download">Download Wallpaper</string>
   <string name="action_view_in_google_maps">View in Google Maps</string>
-  <string name="action_open_earth_view">Open Earth View in browser</string>
 
   <string name="settings_label">Earth View Settings</string>
 
