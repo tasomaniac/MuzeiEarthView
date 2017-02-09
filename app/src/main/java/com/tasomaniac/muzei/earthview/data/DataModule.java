@@ -5,9 +5,9 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.tasomaniac.muzei.earthview.R;
+import com.tasomaniac.muzei.earthview.data.api.EarthView;
 import com.tasomaniac.muzei.earthview.data.prefs.BooleanPreference;
-import com.tasomaniac.muzei.earthview.data.prefs.DownloadUrl;
-import com.tasomaniac.muzei.earthview.data.prefs.NextEarthView;
+import com.tasomaniac.muzei.earthview.data.prefs.EarthViewPrefs;
 import com.tasomaniac.muzei.earthview.data.prefs.RotateInterval;
 import com.tasomaniac.muzei.earthview.data.prefs.StringPreference;
 import com.tasomaniac.muzei.earthview.data.prefs.WiFiOnly;
@@ -19,13 +19,8 @@ import dagger.Reusable;
 @Module
 public final class DataModule {
     private static final String DEFAULT_ROTATE_INTERVAL = "24";
-
-    private static final String PREF_KEY_NEXT_EARTH_VIEW = "next_earth_view";
-    private static final String PREF_KEY_MAPS_LINK = "maps_link";
-    private static final String PREF_KEY_DOWNLOAD_URL = "download_url";
-
-    private static final String FIRST_EARTH_VIEW
-            = "http://earthview.withgoogle.com/_api/istanbul-turkey-1888.json";
+    private static final EarthView FIRST_EARTH_VIEW
+            = new EarthView("http://earthview.withgoogle.com/_api/istanbul-turkey-1888.json", null, null);
 
     @Provides
     static SharedPreferences provideSharedPreferences(Application app) {
@@ -52,27 +47,6 @@ public final class DataModule {
 
     @Provides
     @Reusable
-    @DownloadUrl
-    static StringPreference provideDownloadUrlPreference(SharedPreferences prefs) {
-        return new StringPreference(prefs, PREF_KEY_DOWNLOAD_URL);
-    }
-
-    @Provides
-    @Reusable
-    @MapsLink
-    static StringPreference provideMapsLinkPreference(SharedPreferences prefs) {
-        return new StringPreference(prefs, PREF_KEY_MAPS_LINK);
-    }
-
-    @Provides
-    @Reusable
-    @NextEarthView
-    static StringPreference provideNextEarthViewPreference(SharedPreferences prefs) {
-        return new StringPreference(prefs, PREF_KEY_NEXT_EARTH_VIEW, FIRST_EARTH_VIEW);
-    }
-
-    @Provides
-    @Reusable
     @WiFiOnly
     static BooleanPreference providesWiFiOnlyPreference(Application app, SharedPreferences sharedPreferences) {
         return new BooleanPreference(sharedPreferences, app.getString(R.string.pref_key_wifi_only));
@@ -82,5 +56,10 @@ public final class DataModule {
     @WiFiOnly
     static Boolean providesWiFiOnly(@WiFiOnly BooleanPreference pref) {
         return pref.get();
+    }
+
+    @Provides
+    static EarthViewPrefs earthViewPrefs(SharedPreferences sharedPreferences) {
+        return new EarthViewPrefs(sharedPreferences, FIRST_EARTH_VIEW);
     }
 }

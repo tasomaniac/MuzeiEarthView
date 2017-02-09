@@ -22,6 +22,12 @@ public class EarthView {
     private String nextApi;
     private String nextUrl;
 
+    public EarthView(String nextApi, String mapsLink, String downloadUrl) {
+        this.mapsLink = mapsLink;
+        this.downloadUrl = downloadUrl;
+        this.nextApi = nextApi;
+    }
+
     public String getMapsLink() {
         return mapsLink;
     }

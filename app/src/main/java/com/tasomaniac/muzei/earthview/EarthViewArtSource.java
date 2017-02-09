@@ -20,13 +20,10 @@ import com.google.android.apps.muzei.api.Artwork;
 import com.google.android.apps.muzei.api.RemoteMuzeiArtSource;
 import com.google.android.apps.muzei.api.UserCommand;
 import com.tasomaniac.muzei.earthview.data.Injector;
-import com.tasomaniac.muzei.earthview.data.MapsLink;
 import com.tasomaniac.muzei.earthview.data.api.EarthView;
 import com.tasomaniac.muzei.earthview.data.api.EarthViewApi;
-import com.tasomaniac.muzei.earthview.data.prefs.DownloadUrl;
-import com.tasomaniac.muzei.earthview.data.prefs.NextEarthView;
+import com.tasomaniac.muzei.earthview.data.prefs.EarthViewPrefs;
 import com.tasomaniac.muzei.earthview.data.prefs.RotateInterval;
-import com.tasomaniac.muzei.earthview.data.prefs.StringPreference;
 import com.tasomaniac.muzei.earthview.data.prefs.WiFiOnly;
 import com.tasomaniac.muzei.earthview.settings.SettingsActivity;
 
@@ -53,14 +50,7 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
     @RotateInterval
     String rotateInterval;
     @Inject
-    @DownloadUrl
-    StringPreference downloadUrlPref;
-    @Inject
-    @MapsLink
-    StringPreference mapsLinkPref;
-    @Inject
-    @NextEarthView
-    StringPreference nextEarthViewPref;
+    EarthViewPrefs earthViewPrefs;
     @Inject
     @WiFiOnly
     Boolean wifiOnly;
@@ -110,18 +100,15 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
             return;
         }
 
-        updateArtwork(nextEarthViewPref.get());
+        updateArtwork(earthViewPrefs.get().getNextApi());
     }
 
     private void updateArtwork(String nextEarthViewUrl) throws RetryException {
         Response<EarthView> response = loadNextEarthView(nextEarthViewUrl);
         if (response.isSuccessful()) {
             EarthView earthView = response.body();
-
-            updatePrefsForNextEarthView(earthView);
-
+            earthViewPrefs.set(earthView);
             publishArtwork(createArtworkFrom(earthView));
-
             updateSchedule();
         }
     }
@@ -132,12 +119,6 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
         } catch (IOException e) {
             throw new RetryException(e);
         }
-    }
-
-    private void updatePrefsForNextEarthView(EarthView earthView) {
-        nextEarthViewPref.set(earthView.getNextApi());
-        mapsLinkPref.set(earthView.getMapsLink());
-        downloadUrlPref.set(earthView.getDownloadUrl());
     }
 
     private Artwork createArtworkFrom(EarthView earthView) {
@@ -213,7 +194,7 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
             return;
         }
 
-        String downloadUrl = downloadUrlPref.get();
+        String downloadUrl = earthViewPrefs.get().getDownloadUrl();
         if (downloadUrl == null) {
             return;
         }
@@ -241,7 +222,7 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
     }
 
     private void openInGoogleMaps() {
-        final String mapsLink = mapsLinkPref.get();
+        final String mapsLink = earthViewPrefs.get().getMapsLink();
         if (mapsLink != null) {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(mapsLink))
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
