@@ -1,6 +1,5 @@
 package com.tasomaniac.muzei.earthview;
 
-import android.Manifest;
 import android.app.DownloadManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -35,6 +34,8 @@ import java.util.Date;
 import java.util.List;
 
 import retrofit2.Response;
+
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class EarthViewArtSource extends RemoteMuzeiArtSource {
     private static final String BASE_URL = "http://earthview.withgoogle.com";
@@ -80,27 +81,34 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
 
     @Override
     protected void onTryUpdate(int reason) throws RetryException {
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            //Start Settings Activity to request permissions.
-            startActivity(new Intent(this, SettingsActivity.class)
-                                  .putExtra(SettingsActivity.EXTRA_FROM_BACKGROUND, true)
-                                  .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+        if (requiresPermission()) {
+            Intent settingsIntent = new Intent(this, SettingsActivity.class)
+                    .putExtra(SettingsActivity.EXTRA_FROM_BACKGROUND, true)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(settingsIntent);
             return;
         }
 
-        // Skip the update only when
-        // it is a scheduled request,
-        // wifi only setting is on
-        // and user is not connected to wifi
-        if (reason == UPDATE_REASON_SCHEDULED && wifiOnly && !isWifi()) {
+        if (shouldSkipUpdate(reason)) {
             scheduleUpdate(System.currentTimeMillis() + DateUtils.HOUR_IN_MILLIS);
             return;
         }
 
         updateArtwork(earthViewPrefs.get().getNextApi());
+    }
+
+    private boolean requiresPermission() {
+        return ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED;
+    }
+
+    /**
+     *  Skip the update only when
+     *  - it is a scheduled request,
+     *  - wifi only setting is on
+     *  - and user is not connected to wifi
+     */
+    private boolean shouldSkipUpdate(int reason) {
+        return reason == UPDATE_REASON_SCHEDULED && wifiOnly && !isWifi();
     }
 
     private void updateArtwork(String nextEarthViewUrl) throws RetryException {
