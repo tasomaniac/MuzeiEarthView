@@ -21,29 +21,18 @@
 -keep interface com.tasomaniac.muzei.earthview.data.api.EarthViewApi.** { *; }
 -keep class com.tasomaniac.muzei.earthview.data.api.EarthView.** { *; }
 
--keep class com.squareup.moshi.** { *; }
--keep interface com.squareup.moshi.** { *; }
--dontwarn com.squareup.moshi.**
+#-keep class com.squareup.moshi.** { *; }
+#-keep interface com.squareup.moshi.** { *; }
+#-dontwarn com.squareup.moshi.**
 
--dontwarn rx.**
--dontwarn retrofit.**
--dontwarn okio.**
--keep class retrofit.** { *; }
--keepclasseswithmembers class * {
-    @retrofit.http.* <methods>;
-}
-
-# Okio
--keep class sun.misc.Unsafe { *; }
--dontwarn java.nio.file.*
--dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
--dontwarn okio.**
-
-# OkHttp
+# Retrofit
+-dontnote retrofit2.Platform
+-dontnote retrofit2.Platform$IOS$MainThreadExecutor
+-dontwarn retrofit2.Platform$Java8
 -keepattributes Signature
--keepattributes *Annotation*
--keep class com.squareup.okhttp.** { *; }
--keep interface com.squareup.okhttp.** { *; }
--dontwarn com.squareup.okhttp.**
+-keepattributes Exceptions
+
+-dontwarn okio.**
+-dontwarn okhttp3.**
 
 -keepattributes EnclosingMethod
