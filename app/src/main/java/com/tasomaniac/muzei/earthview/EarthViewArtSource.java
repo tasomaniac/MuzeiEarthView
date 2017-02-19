@@ -128,7 +128,8 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
         Intent viewIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(BASE_URL + earthView.getUrl()));
         return new Artwork.Builder()
                 .title(earthView.getTitle())
-                .byline(earthView.getAttribution())
+                .byline("Earth View")
+                .attribution(earthView.getAttribution())
                 .imageUri(Uri.parse(earthView.getPhotoUrl()))
                 .token(String.valueOf(earthView.getId()))
                 .viewIntent(viewIntent)
