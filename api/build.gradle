@@ -1,0 +1,18 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion 19
+    }
+
+    sourceSets {
+        main {
+            java {
+                srcDir 'build/source/aidl/debug'
+            }
+        }
+    }
+}
