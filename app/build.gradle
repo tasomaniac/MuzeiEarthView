@@ -16,7 +16,7 @@ android {
 
     defaultConfig {
         applicationId "com.tasomaniac.muzei.earthview"
-        minSdkVersion 17
+        minSdkVersion 19
         targetSdkVersion rootProject.ext.compileSdkVersion
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
