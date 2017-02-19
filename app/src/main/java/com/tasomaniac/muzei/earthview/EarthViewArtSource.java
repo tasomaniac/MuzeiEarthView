@@ -51,11 +51,9 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
     @RotateInterval
     String rotateInterval;
     @Inject
-    EarthViewPrefs earthViewPrefs;
-    @Inject
     @WiFiOnly
     Boolean wifiOnly;
-
+    @Inject EarthViewPrefs earthViewPrefs;
     @Inject EarthViewApi earthViewApi;
 
     public EarthViewArtSource() {
@@ -99,10 +97,10 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
     }
 
     /**
-     *  Skip the update only when
-     *  - it is a scheduled request,
-     *  - wifi only setting is on
-     *  - and user is not connected to wifi
+     * Skip the update only when
+     * - it is a scheduled request,
+     * - wifi only setting is on
+     * - and user is not connected to wifi
      */
     private boolean shouldSkipUpdate(int reason) {
         return reason == UPDATE_REASON_SCHEDULED && wifiOnly && !isWifi();
