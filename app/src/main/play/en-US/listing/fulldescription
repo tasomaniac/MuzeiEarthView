@@ -1,6 +1,8 @@
 Earth View is a collection of the most striking and enigmatic landscapes available in Google Earth. 
 
-Display a beautiful image from Google Earth as your wallpaper every day. 
+Display a beautiful image from Google Earth as your wallpaper every day with configurations.
+- You can enable Wi-Fi only mode where the app only downloads the wallpapers only if the device is connected to Wi-Fi. 
+- You can change the interval between wallpaper changes.
 
 <b>Requires the Muzei Live Wallpaper made by Roman Nurik from http://get.muzei.co</b>
 Muzei is a live wallpaper that gently refreshes your home screen each day with famous works of art. It also recedes into the background, blurring and dimming artwork to keep your icons and widgets in the spotlight. Simply double touch the wallpaper or open the Muzei app to enjoy and explore the artwork in its full glory.
@@ -16,6 +18,5 @@ This is an extension for the Muzei live-wallpaper app.
 The application is non-commercial, without ads and open source.
 
 You can find the source code here https://github.com/tasomaniac/MuzeiEarthView/
-
 
 App Icon by http://icons8.com/
