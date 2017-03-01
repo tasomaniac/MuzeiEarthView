@@ -127,13 +127,21 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
     private Artwork createArtworkFrom(EarthView earthView) {
         Intent viewIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(BASE_URL + earthView.getUrl()));
         return new Artwork.Builder()
-                .title(earthView.getRegion() + ", " + earthView.getCountry())
+                .title(title(earthView))
                 .byline("Earth View")
                 .attribution(earthView.getAttribution())
                 .imageUri(Uri.parse(earthView.getPhotoUrl()))
                 .token(String.valueOf(earthView.getId()))
                 .viewIntent(viewIntent)
                 .build();
+    }
+
+    private String title(EarthView earthView) {
+        if (earthView.getRegion() != null) {
+            return earthView.getRegion() + ", " + earthView.getCountry();
+        } else {
+            return earthView.getCountry();
+        }
     }
 
     private void updateSchedule() {
