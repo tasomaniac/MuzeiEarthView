@@ -13,7 +13,6 @@ import dagger.Component;
 
 @Singleton
 @Component(modules = {
-        AppModule.class,
         DataModule.class,
         ApiModule.class,
         AnalyticsModule.class

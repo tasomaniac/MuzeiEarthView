@@ -31,7 +31,7 @@ public final class DataModule {
     @Reusable
     @RotateInterval
     static StringPreference provideRotateIntervalPreference(Application app,
-                                                     SharedPreferences prefs) {
+                                                            SharedPreferences prefs) {
         return new StringPreference(
                 prefs,
                 app.getString(R.string.pref_key_rotate_interval),
