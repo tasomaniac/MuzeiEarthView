@@ -62,11 +62,12 @@ play {
 }
 
 dependencies {
-    def supportLibVersion = "25.1.1"
+    def supportLibVersion = '25.2.0'
+    def retrofitVersion = '2.2.0'
 
     compile 'com.squareup.okhttp3:okhttp:3.6.0'
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.squareup.retrofit2:converter-moshi:2.1.0'
+    compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    compile "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
 
     compile "com.android.support:appcompat-v7:$supportLibVersion"
     compile "com.android.support:preference-v14:$supportLibVersion"
