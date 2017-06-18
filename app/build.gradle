@@ -17,7 +17,7 @@ android {
     defaultConfig {
         applicationId "com.tasomaniac.muzei.earthview"
         minSdkVersion 19
-        targetSdkVersion rootProject.ext.compileSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
 
@@ -62,10 +62,10 @@ play {
 }
 
 dependencies {
-    def supportLibVersion = '25.2.0'
-    def retrofitVersion = '2.2.0'
+    def supportLibVersion = '26.0.0-beta2'
+    def retrofitVersion = '2.3.0'
 
-    compile 'com.squareup.okhttp3:okhttp:3.6.0'
+    compile 'com.squareup.okhttp3:okhttp:3.8.1'
     compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
     compile "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
 
@@ -75,14 +75,14 @@ dependencies {
 
     compile 'com.jakewharton.timber:timber:4.5.1'
 
-    compile 'com.google.dagger:dagger:2.9'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.9'
+    compile 'com.google.dagger:dagger:2.11'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
 
 //    compile 'com.google.android.apps.muzei:muzei-api:2.0'
     compile project(':api')
 
     compile 'com.tasomaniac:integrationpreference-support:0.2'
-    compile 'com.crashlytics.sdk.android:crashlytics:2.6.6'
+    compile 'com.crashlytics.sdk.android:crashlytics:2.6.8'
 
     testCompile 'junit:junit:4.12'
 }
