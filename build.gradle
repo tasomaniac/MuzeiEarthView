@@ -25,6 +25,8 @@ allprojects {
 }
 
 ext {
+    supportLibVersion = '26.0.0-beta2'
+    
     ci = "true" == System.getenv("CI")
 
     versionMajor = 1
