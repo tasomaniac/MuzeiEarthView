@@ -23,17 +23,17 @@ public class SettingsActivity extends AppCompatActivity {
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     }
 
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_action_done);
         toolbar.setNavigationContentDescription(R.string.done);
         setSupportActionBar(toolbar);
 
-        CollapsingToolbarLayout collapsingToolbar =
-                (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        CollapsingToolbarLayout collapsingToolbar = findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setTitle(getString(R.string.settings_label));
 
         if (savedInstanceState == null) {
