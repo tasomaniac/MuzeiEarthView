@@ -18,6 +18,18 @@
     android:theme="@style/Theme.Muzei.EarthView"
     android:supportsRtl="false">
 
+    <provider
+      android:name=".EarthViewArtProvider"
+      android:authorities="com.tasomaniac.muzei.earthview.EarthViewArtProvider"
+      android:label="@string/source_name"
+      android:description="@string/source_description"
+      android:exported="true"
+      android:permission="com.google.android.apps.muzei.api.ACCESS_PROVIDER">
+      <intent-filter>
+        <action android:name="com.google.android.apps.muzei.api.MuzeiArtProvider" />
+      </intent-filter>
+    </provider>
+
     <service
       android:name=".EarthViewArtSource"
       android:description="@string/source_description"
@@ -34,6 +46,9 @@
       <meta-data
         android:name="settingsActivity"
         android:value="com.tasomaniac.muzei.earthview.settings.SettingsActivity" />
+      <meta-data
+        android:name="replacement"
+        android:value="com.tasomaniac.muzei.earthview.EarthViewArtProvider" />
     </service>
 
     <activity
