@@ -4,6 +4,7 @@ plugins {
 apply plugin: 'com.android.application'
 apply plugin: 'com.novoda.android-command'
 apply plugin: 'com.novoda.build-properties'
+apply plugin: 'com.novoda.static-analysis'
 apply plugin: 'com.github.triplet.play'
 apply plugin: 'io.fabric'
 
@@ -18,7 +19,7 @@ android {
 
     defaultConfig {
         applicationId "com.tasomaniac.muzei.earthview"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
@@ -52,14 +53,24 @@ android {
             signingConfig signingConfigs.release
         }
     }
+}
+
+staticAnalysis {
+    penalty {
+        maxWarnings = 0
+        maxErrors = 0
+    }
 
     lintOptions {
-        abortOnError true
         textReport true
         textOutput 'stdout'
 
-        fatal 'UnusedResources'
-        warning 'InvalidPackage'
+        checkAllWarnings true
+        checkReleaseBuilds false
+
+        lintConfig file('props/lint.xml')
+
+        includeVariants { it.name == 'debug' }
     }
 }
 

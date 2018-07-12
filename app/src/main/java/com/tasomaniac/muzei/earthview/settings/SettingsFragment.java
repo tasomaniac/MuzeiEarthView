@@ -35,7 +35,6 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceCategory;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.view.View;
-
 import com.google.android.apps.muzei.api.MuzeiArtSource;
 import com.tasomaniac.android.widget.IntegrationPreference;
 import com.tasomaniac.muzei.earthview.BuildConfig;
@@ -44,10 +43,9 @@ import com.tasomaniac.muzei.earthview.R;
 import com.tasomaniac.muzei.earthview.data.Injector;
 import com.tasomaniac.muzei.earthview.data.prefs.RotateInterval;
 import com.tasomaniac.muzei.earthview.data.prefs.StringPreference;
+import timber.log.Timber;
 
 import javax.inject.Inject;
-
-import timber.log.Timber;
 
 public class SettingsFragment extends PreferenceFragmentCompat
         implements SharedPreferences.OnSharedPreferenceChangeListener,
@@ -217,7 +215,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
             if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // storage permission has been granted, preview can be displayed
                 Timber.i("storage permission has now been granted. Showing preview.");
-                Snackbar.make(getView(), R.string.permision_available_storage,
+                Snackbar.make(getView(), R.string.permission_available_storage,
                         Snackbar.LENGTH_SHORT).show();
 
                 if (permissionPref != null) {
