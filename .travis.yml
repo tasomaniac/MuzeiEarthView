@@ -1,30 +1,21 @@
+dist: trusty
+sudo: required
+
 language: android
 
-android:
-  components:
-    - tools
-    - platform-tools
-    - build-tools-26.0.0
-    - android-26
-
 jdk:
-  - oraclejdk8
+  - openjdk8
 
-before_script:
-  - echo "org.gradle.configureondemand=true" >> $HOME/.gradle/gradle.properties
-  - echo "org.gradle.jvmargs=-Xmx1536M" >> $HOME/.gradle/gradle.properties
-  
-script: "./gradlew build"
+before_install:
+  - mkdir "$ANDROID_HOME/licenses" || true
+  - echo "d56f5187479451eabf01fb78af6dfcb131a6481e" > "$ANDROID_HOME/licenses/android-sdk-license"
 
 env:
   global:
     secure: "PVbL8+paUZtJKEgWqq+Z73WZ00TKGJv26R1GDauhdoA8tMawYYy499JNFo6VUd0TSbYbPEvejJmS8d6V2fu5cnROrvweiiAsDoHOXXFIHPbQEzqE1cJqcIilsdR4YFP3SQ7Hv6SI/HVDxWkRAxgjvFjUSIGcnJqCAw/VffNlVhs="
 
-branches:
-  except:
-    - gh-pages
-
-sudo: false
+script:
+  - ./gradlew evaluateViolations testDebugUnitTest assembleDebug -s
 
 cache:
   directories:
