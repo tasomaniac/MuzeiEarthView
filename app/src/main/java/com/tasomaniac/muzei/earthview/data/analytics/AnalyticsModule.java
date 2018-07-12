@@ -4,17 +4,16 @@ import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
 import com.crashlytics.android.answers.CustomEvent;
 import com.tasomaniac.muzei.earthview.BuildConfig;
-
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
 
+import javax.inject.Singleton;
+
 @Module
-public final class AnalyticsModule {
+public abstract class AnalyticsModule {
 
     @Provides @Singleton
-    Analytics provideAnalytics() {
+    static Analytics provideAnalytics() {
         if (BuildConfig.DEBUG) {
             return new Analytics.DebugAnalytics();
         }

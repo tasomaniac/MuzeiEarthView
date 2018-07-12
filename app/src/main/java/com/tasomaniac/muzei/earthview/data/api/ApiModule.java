@@ -12,13 +12,13 @@ import javax.inject.Singleton;
 import java.io.File;
 
 @Module
-public final class ApiModule {
+public abstract class ApiModule {
     private static final String BASE_URL = "http://earthview.withgoogle.com";
     private static final int DISK_CACHE_SIZE = 5 * 1024 * 1024;
 
     @Provides
     @Singleton
-    OkHttpClient provideOkHttpClient(App app) {
+    static OkHttpClient provideOkHttpClient(App app) {
         File cacheDir = new File(app.getCacheDir(), "http");
         Cache cache = new Cache(cacheDir, DISK_CACHE_SIZE);
 
@@ -29,7 +29,7 @@ public final class ApiModule {
 
     @Provides
     @Singleton
-    EarthViewApi provideEarthViewApi(OkHttpClient client) {
+    static EarthViewApi provideEarthViewApi(OkHttpClient client) {
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(MoshiConverterFactory.create())
                 .baseUrl(BASE_URL)

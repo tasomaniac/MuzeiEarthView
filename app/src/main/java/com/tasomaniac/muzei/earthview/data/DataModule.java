@@ -15,7 +15,7 @@ import dagger.Provides;
 import dagger.Reusable;
 
 @Module
-public final class DataModule {
+public abstract class DataModule {
     private static final String DEFAULT_ROTATE_INTERVAL = "24";
     private static final EarthView FIRST_EARTH_VIEW
             = new EarthView("http://earthview.withgoogle.com/_api/istanbul-turkey-1888.json", null, null);
