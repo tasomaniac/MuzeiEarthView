@@ -1,5 +1,5 @@
 plugins {
-    id 'net.ltgt.errorprone' version '0.0.10'
+    id 'net.ltgt.errorprone' version '0.0.14'
 }
 apply plugin: 'com.android.application'
 apply plugin: 'com.novoda.android-command'
@@ -7,16 +7,14 @@ apply plugin: 'com.novoda.build-properties'
 apply plugin: 'com.github.triplet.play'
 apply plugin: 'io.fabric'
 
-def signingFile = file('props/release.signing')
 buildProperties {
-    signing.file signingFile.exists() ? signingFile : file('props/debug.signing')
-    secrets.file file('props/secrets.properties')
+    signing.using(file('props/release.signing')) | file('props/debug.signing')
+    secrets.using(file('props/secrets.properties'))
 }
 def secrets = buildProperties.secrets
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         applicationId "com.tasomaniac.muzei.earthview"
@@ -29,8 +27,14 @@ android {
     }
 
     signingConfigs {
-        debug.storeFile file("props/debug.keystore")
-        release.signingConfigProperties buildProperties.signing
+        debug.storeFile file('props/debug.keystore')
+        release {
+            def signing = buildProperties.signing
+            storeFile file("props/${signing['storeFile'].string}")
+            storePassword signing['storePassword'].string
+            keyAlias signing['keyAlias'].string
+            keyPassword signing['keyPassword'].string
+        }
     }
 
     buildTypes {
@@ -66,9 +70,9 @@ play {
 }
 
 dependencies {
-    def retrofitVersion = '2.3.0'
+    def retrofitVersion = '2.4.0'
 
-    compile 'com.squareup.okhttp3:okhttp:3.8.1'
+    compile 'com.squareup.okhttp3:okhttp:3.10.0'
     compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
     compile "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
 
@@ -76,16 +80,16 @@ dependencies {
     compile "com.android.support:preference-v14:$rootProject.ext.supportLibVersion"
     compile "com.android.support:design:$rootProject.ext.supportLibVersion"
 
-    compile 'com.jakewharton.timber:timber:4.5.1'
+    compile 'com.jakewharton.timber:timber:4.7.1'
 
-    compile 'com.google.dagger:dagger:2.11'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
+    compile 'com.google.dagger:dagger:2.16'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.16'
 
-//    compile 'com.google.android.apps.muzei:muzei-api:2.0'
-    compile project(':api')
+    compile 'com.google.android.apps.muzei:muzei-api:3.0.0-alpha01'
+//    compile project(':api')
 
     compile 'com.tasomaniac:integrationpreference-support:0.2'
-    compile 'com.crashlytics.sdk.android:crashlytics:2.6.8'
+    compile 'com.crashlytics.sdk.android:crashlytics:2.9.4'
 
     testCompile 'junit:junit:4.12'
 }
