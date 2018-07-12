@@ -1,4 +1,22 @@
 buildscript {
+    ext.ci = 'true' == System.getenv('CI')
+
+    def versionMajor = 1
+    def versionMinor = 4
+    def versionBuild = 2
+
+    ext.versions = [
+            compileSdk : 28,
+            targetSdk  : 25,
+            minSdk     : 21,
+            versionCode: versionMajor * 10000 + versionMinor * 100 + versionBuild,
+            versionName: "${versionMajor}.${versionMinor}",
+
+            dagger     : '2.16',
+            okHttp     : '3.10.0',
+            retrofit   : '2.4.0'
+    ]
+
     repositories {
         google()
         jcenter()
@@ -21,22 +39,5 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven { url 'https://maven.fabric.io/public' }
     }
-}
-
-ext {
-    supportLibVersion = '28.0.0-alpha3'
-    
-    ci = "true" == System.getenv("CI")
-
-    versionMajor = 1
-    versionMinor = 4
-    versionBuild = 2
-
-    versionCode = versionMajor * 10000 + versionMinor * 1000 + versionBuild
-    versionName = "${versionMajor}.${versionMinor}"
-
-    compileSdkVersion = 28
-    targetSdkVersion = 25
 }

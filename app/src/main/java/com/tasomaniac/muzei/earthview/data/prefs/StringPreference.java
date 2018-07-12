@@ -1,7 +1,7 @@
 package com.tasomaniac.muzei.earthview.data.prefs;
 
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public class StringPreference {
     private final SharedPreferences preferences;

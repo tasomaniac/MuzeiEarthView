@@ -1,16 +1,15 @@
 package com.tasomaniac.muzei.earthview.data.api;
 
-import android.app.Application;
-
-import javax.inject.Singleton;
-import java.io.File;
-
+import com.tasomaniac.muzei.earthview.App;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
+
+import javax.inject.Singleton;
+import java.io.File;
 
 @Module
 public final class ApiModule {
@@ -19,7 +18,7 @@ public final class ApiModule {
 
     @Provides
     @Singleton
-    OkHttpClient provideOkHttpClient(Application app) {
+    OkHttpClient provideOkHttpClient(App app) {
         File cacheDir = new File(app.getCacheDir(), "http");
         Cache cache = new Cache(cacheDir, DISK_CACHE_SIZE);
 

@@ -15,16 +15,17 @@ buildProperties {
 def secrets = buildProperties.secrets
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
+
+    compileSdkVersion versions.compileSdk
 
     defaultConfig {
-        applicationId "com.tasomaniac.muzei.earthview"
-        minSdkVersion 21
-        targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode rootProject.ext.versionCode
-        versionName rootProject.ext.versionName
+        applicationId 'com.tasomaniac.muzei.earthview'
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.compileSdk
+        versionCode versions.versionCode
+        versionName versions.versionName
 
-        resConfigs "en"
+        resConfigs 'en'
     }
 
     signingConfigs {
@@ -80,27 +81,34 @@ play {
     track = 'alpha'
 }
 
+tasks.withType(JavaCompile) {
+    options.compilerArgs += ['-XepExcludedPaths:.*/generated/.*']
+}
+
 dependencies {
-    def retrofitVersion = '2.4.0'
 
-    compile 'com.squareup.okhttp3:okhttp:3.10.0'
-    compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
-    compile "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    implementation "com.squareup.retrofit2:retrofit:$versions.retrofit"
+    implementation "com.squareup.retrofit2:converter-moshi:$versions.retrofit"
 
-    compile "com.android.support:appcompat-v7:$rootProject.ext.supportLibVersion"
-    compile "com.android.support:preference-v14:$rootProject.ext.supportLibVersion"
-    compile "com.android.support:design:$rootProject.ext.supportLibVersion"
+    implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
+    implementation 'androidx.fragment:fragment:1.0.0-beta01'
+    implementation 'androidx.preference:preference:1.0.0-beta01'
+    implementation 'com.google.android.material:material:1.0.0-beta01'
 
-    compile 'com.jakewharton.timber:timber:4.7.1'
+    implementation 'com.jakewharton.timber:timber:4.7.1'
 
-    compile 'com.google.dagger:dagger:2.16'
+    implementation 'com.google.dagger:dagger:2.16'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.16'
 
-    compile 'com.google.android.apps.muzei:muzei-api:3.0.0-alpha01'
-//    compile project(':api')
+    implementation "com.google.dagger:dagger-android-support:$versions.dagger"
+    annotationProcessor "com.google.dagger:dagger-compiler:$versions.dagger"
+    annotationProcessor "com.google.dagger:dagger-android-processor:$versions.dagger"
 
-    compile 'com.tasomaniac:integrationpreference-support:0.2'
-    compile 'com.crashlytics.sdk.android:crashlytics:2.9.4'
+    implementation 'com.google.android.apps.muzei:muzei-api:3.0.0-alpha01'
 
-    testCompile 'junit:junit:4.12'
+    implementation 'com.tasomaniac:integrationpreference-support:0.2'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.4'
+
+    testImplementation 'junit:junit:4.12'
 }

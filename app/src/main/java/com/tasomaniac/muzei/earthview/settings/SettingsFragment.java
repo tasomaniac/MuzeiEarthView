@@ -19,30 +19,31 @@ package com.tasomaniac.muzei.earthview.settings;
 import android.Manifest;
 import android.app.backup.BackupManager;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.preference.ListPreference;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceCategory;
-import android.support.v7.preference.PreferenceFragmentCompat;
 import android.view.View;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
+import androidx.preference.PreferenceFragmentCompat;
 import com.google.android.apps.muzei.api.MuzeiArtSource;
+import com.google.android.material.snackbar.Snackbar;
 import com.tasomaniac.android.widget.IntegrationPreference;
 import com.tasomaniac.muzei.earthview.BuildConfig;
 import com.tasomaniac.muzei.earthview.EarthViewArtSource;
 import com.tasomaniac.muzei.earthview.R;
-import com.tasomaniac.muzei.earthview.data.Injector;
 import com.tasomaniac.muzei.earthview.data.prefs.RotateInterval;
 import com.tasomaniac.muzei.earthview.data.prefs.StringPreference;
+import dagger.android.support.AndroidSupportInjection;
 import timber.log.Timber;
 
 import javax.inject.Inject;
@@ -87,8 +88,13 @@ public class SettingsFragment extends PreferenceFragmentCompat
     }
 
     @Override
+    public void onAttach(Context context) {
+        AndroidSupportInjection.inject(this);
+        super.onAttach(context);
+    }
+
+    @Override
     public void onCreatePreferences(Bundle bundle, String s) {
-        Injector.obtain(getContext()).inject(this);
         addPreferencesFromResource(R.xml.pref_general);
 
         bindPreferenceSummaryToValue(

@@ -1,9 +1,8 @@
 package com.tasomaniac.muzei.earthview.data;
 
-import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-
+import com.tasomaniac.muzei.earthview.App;
 import com.tasomaniac.muzei.earthview.R;
 import com.tasomaniac.muzei.earthview.data.api.EarthView;
 import com.tasomaniac.muzei.earthview.data.prefs.BooleanPreference;
@@ -11,7 +10,6 @@ import com.tasomaniac.muzei.earthview.data.prefs.EarthViewPrefs;
 import com.tasomaniac.muzei.earthview.data.prefs.RotateInterval;
 import com.tasomaniac.muzei.earthview.data.prefs.StringPreference;
 import com.tasomaniac.muzei.earthview.data.prefs.WiFiOnly;
-
 import dagger.Module;
 import dagger.Provides;
 import dagger.Reusable;
@@ -23,15 +21,14 @@ public final class DataModule {
             = new EarthView("http://earthview.withgoogle.com/_api/istanbul-turkey-1888.json", null, null);
 
     @Provides
-    static SharedPreferences provideSharedPreferences(Application app) {
+    static SharedPreferences provideSharedPreferences(App app) {
         return PreferenceManager.getDefaultSharedPreferences(app);
     }
 
     @Provides
     @Reusable
     @RotateInterval
-    static StringPreference provideRotateIntervalPreference(Application app,
-                                                            SharedPreferences prefs) {
+    static StringPreference provideRotateIntervalPreference(App app, SharedPreferences prefs) {
         return new StringPreference(
                 prefs,
                 app.getString(R.string.pref_key_rotate_interval),
@@ -48,7 +45,7 @@ public final class DataModule {
     @Provides
     @Reusable
     @WiFiOnly
-    static BooleanPreference providesWiFiOnlyPreference(Application app, SharedPreferences sharedPreferences) {
+    static BooleanPreference providesWiFiOnlyPreference(App app, SharedPreferences sharedPreferences) {
         return new BooleanPreference(sharedPreferences, app.getString(R.string.pref_key_wifi_only));
     }
 

@@ -11,20 +11,20 @@ import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v4.content.ContextCompat;
 import android.text.format.DateUtils;
 import android.widget.Toast;
-
+import androidx.core.content.ContextCompat;
 import com.google.android.apps.muzei.api.Artwork;
 import com.google.android.apps.muzei.api.RemoteMuzeiArtSource;
 import com.google.android.apps.muzei.api.UserCommand;
-import com.tasomaniac.muzei.earthview.data.Injector;
 import com.tasomaniac.muzei.earthview.data.api.EarthView;
 import com.tasomaniac.muzei.earthview.data.api.EarthViewApi;
 import com.tasomaniac.muzei.earthview.data.prefs.EarthViewPrefs;
 import com.tasomaniac.muzei.earthview.data.prefs.RotateInterval;
 import com.tasomaniac.muzei.earthview.data.prefs.WiFiOnly;
 import com.tasomaniac.muzei.earthview.settings.SettingsActivity;
+import dagger.android.AndroidInjection;
+import retrofit2.Response;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -32,8 +32,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import retrofit2.Response;
 
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
@@ -62,8 +60,8 @@ public class EarthViewArtSource extends RemoteMuzeiArtSource {
 
     @Override
     public void onCreate() {
+        AndroidInjection.inject(this);
         super.onCreate();
-        Injector.obtain(this).inject(this);
 
         List<UserCommand> commands = new ArrayList<>();
         commands.add(new UserCommand(BUILTIN_COMMAND_ID_NEXT_ARTWORK));
